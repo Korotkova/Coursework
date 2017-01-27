@@ -43,6 +43,7 @@ public class Application extends JFrame {
         text2.setFont(new Font("Tahoma", 1, 12)); 
         text3.setFont(new Font("Tahoma", 1, 18));
         text4.setFont(new Font("Tahoma", 1, 18));
+        spinner1.setFont(new Font("Tahoma", 0, 12));
         spinner2.setFont(new Font("Tahoma", 0, 12));
         
         add(panel).setBackground(Color.WHITE); GroupLayout panelLayout = new GroupLayout(panel);
