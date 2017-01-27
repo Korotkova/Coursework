@@ -17,7 +17,7 @@ import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
-public class Application2 extends Application{
+public class Application2 {
 
     private int rows, columns;
     
