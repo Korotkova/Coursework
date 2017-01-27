@@ -14,16 +14,17 @@ import javax.swing.JSpinner;
 import javax.swing.LayoutStyle;
 import javax.swing.SpinnerNumberModel;
 
-public class Application extends JFrame {
+public class Application {
     
-    public int rows, columns;
+    private int rows, columns;
 
     public Application() {
         
-        setTitle("Транспортная задача");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setBounds(500,200,500, 300);
-        setResizable(false);
+        JFrame f = new JFrame();
+        f.setTitle("Транспортная задача");
+        f.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        f.setBounds(500, 200, 500, 300);
+        f.setResizable(false);
         
         SpinnerNumberModel numberModel1 = new SpinnerNumberModel(1, 1, 6, 1);
         SpinnerNumberModel numberModel2 = new SpinnerNumberModel(1, 1, 6, 1);
@@ -37,8 +38,9 @@ public class Application extends JFrame {
         JSpinner spinner1 = new JSpinner(numberModel1);
         JSpinner spinner2 = new JSpinner(numberModel2);
         
-        rows = numberModel1.getNumber().intValue();
-        columns = numberModel2.getNumber().intValue();
+        //rows = numberModel1.getNumber().intValue();
+        //columns = spinner2.getComponentCount();
+        
         text1.setFont(new Font("Tahoma", 1, 24));
         text2.setFont(new Font("Tahoma", 1, 12)); 
         text3.setFont(new Font("Tahoma", 1, 18));
@@ -46,7 +48,7 @@ public class Application extends JFrame {
         spinner1.setFont(new Font("Tahoma", 0, 12));
         spinner2.setFont(new Font("Tahoma", 0, 12));
         
-        add(panel).setBackground(Color.WHITE); GroupLayout panelLayout = new GroupLayout(panel);
+        f.add(panel).setBackground(Color.WHITE); GroupLayout panelLayout = new GroupLayout(panel);
         panel.setLayout(panelLayout);
         panelLayout.setHorizontalGroup(
             panelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -96,8 +98,8 @@ public class Application extends JFrame {
                         .addGap(19, 19, 19))))
         );
 
-        GroupLayout layout = new GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        GroupLayout layout = new GroupLayout(f.getContentPane());
+        f.getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -109,15 +111,15 @@ public class Application extends JFrame {
             .addComponent(panel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        pack();
+        f.pack();
         
-        setVisible(true);
+        f.setVisible(true);
 
         next.addActionListener( new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-                new Application2(); 
+                f.setVisible(false);
+                new Application2(rows, columns); 
             }
         });
     }
