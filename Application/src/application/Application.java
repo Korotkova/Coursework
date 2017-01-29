@@ -16,7 +16,8 @@ import javax.swing.SpinnerNumberModel;
 
 public class Application {
     
-    private int rows, columns;
+    private final SpinnerNumberModel numberModel1;
+    private final SpinnerNumberModel numberModel2;
 
     public Application() {
         
@@ -26,8 +27,8 @@ public class Application {
         f.setBounds(500, 200, 500, 300);
         f.setResizable(false);
         
-        SpinnerNumberModel numberModel1 = new SpinnerNumberModel(1, 1, 6, 1);
-        SpinnerNumberModel numberModel2 = new SpinnerNumberModel(1, 1, 6, 1);
+        numberModel1 = new SpinnerNumberModel(1, 1, 6, 1);
+        numberModel2 = new SpinnerNumberModel(1, 1, 6, 1);
 
         JPanel panel = new JPanel(); 
         JLabel text1 = new JLabel("Решение Транспортной задачи");
@@ -119,7 +120,7 @@ public class Application {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.setVisible(false);
-                new Application2(rows, columns); 
+                new EnterValuesWindow((Integer) numberModel1.getValue(), (Integer) numberModel2.getValue()); 
             }
         });
     }

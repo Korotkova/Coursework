@@ -17,13 +17,20 @@ import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
-public class Application2 {
+public class EnterValuesWindow {
 
-    private int rows, columns;
+    private final Integer rows, columns;
+    private final int[] masU;
+    private final int[] masV;
+    private final int[][] moneyMN;
+    private final DefaultTableModel model1, model2, model3;
     
-    public Application2(int row, int column) {
+    public EnterValuesWindow(Integer row, Integer column) {
         
         rows = row; columns = column;
+        model1 = new DefaultTableModel(1, columns);
+        model2 = new DefaultTableModel(1, rows);
+        model3 = new DefaultTableModel(rows, columns);
         
         JFrame jf = new JFrame();
         jf.setTitle("Транспортная задача");
@@ -43,9 +50,9 @@ public class Application2 {
         JLabel text4 = new JLabel("Заполните таблицу издержек");
         JLabel text5 = new JLabel("Метод нахождения опорного плана");
         JLabel text6 = new JLabel("Целевая функция");
-        JTable table1 = new JTable();
-        JTable table2 = new JTable();
-        JTable table3 = new JTable();
+        JTable table1 = new JTable(model1);
+        JTable table2 = new JTable(model2);
+        JTable table3 = new JTable(model3);
         JCheckBox checkBox1 = new JCheckBox();
         JButton button = new JButton("Решить");
         
@@ -60,13 +67,17 @@ public class Application2 {
         text3.setFont(new Font("Tahoma", 0, 12));
         text4.setFont(new Font("Tahoma", 1, 11));
         text5.setFont(new Font("Tahoma", 1, 12));
-        table1.setModel(new DefaultTableModel(1, columns));
-        table2.setModel(new DefaultTableModel(1, rows));
-        table3.setModel(new DefaultTableModel(rows, columns));
+        text6.setFont(new Font("Tahoma", 1, 12));
         table3.setRowHeight(20);
-        jScrollPane3.setViewportView(table3);
         jScrollPane1.setViewportView(table2);
         jScrollPane2.setViewportView(table1);
+        jScrollPane3.setViewportView(table3);
+        table1.getTableHeader().setReorderingAllowed(false);//Запрет перетаскивания столбцов
+        table2.getTableHeader().setReorderingAllowed(false);
+        table3.getTableHeader().setReorderingAllowed(false);
+        table1.getTableHeader().setResizingAllowed(false);//Запрет на изменение ширины столбцов
+        table2.getTableHeader().setResizingAllowed(false);
+        table3.getTableHeader().setResizingAllowed(false);
         
         jf.add(panel).setBackground(Color.WHITE);
         GroupLayout panelLayout = new GroupLayout(panel);
@@ -173,6 +184,14 @@ public class Application2 {
         jf.pack();
         
         jf.setVisible(true);
+        
+        masU = new int[columns];
+        masV = new int[rows];
+        moneyMN = new int[rows+1][columns+1];
+        
+        /*for(int i = 0; i < model1.getColumnCount(); i++) {
+            Object valueAt1 = model1.getValueAt(i, 0);
+            masU[i] = (int) valueAt1;
+        }     */
     }
-    
 }
