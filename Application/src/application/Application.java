@@ -116,12 +116,9 @@ public class Application {
         
         f.setVisible(true);
 
-        next.addActionListener( new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                f.setVisible(false);
-                new EnterValuesWindow((Integer) numberModel1.getValue(), (Integer) numberModel2.getValue()); 
-            }
+        next.addActionListener((ActionEvent e) -> {
+            f.setVisible(false);
+            new EnterValuesWindow((Integer) numberModel1.getValue(), (Integer) numberModel2.getValue());
         });
     }
     

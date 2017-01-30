@@ -2,6 +2,7 @@ package application;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -20,9 +21,6 @@ import javax.swing.table.DefaultTableModel;
 public class EnterValuesWindow {
 
     private final Integer rows, columns;
-    private final int[] masU;
-    private final int[] masV;
-    private final int[][] moneyMN;
     private final DefaultTableModel model1, model2, model3;
     
     public EnterValuesWindow(Integer row, Integer column) {
@@ -78,6 +76,9 @@ public class EnterValuesWindow {
         table1.getTableHeader().setResizingAllowed(false);//Запрет на изменение ширины столбцов
         table2.getTableHeader().setResizingAllowed(false);
         table3.getTableHeader().setResizingAllowed(false);
+        
+        Object selectedItem1 = cb1.getModel().getSelectedItem();
+        Object selectedItem2 = cb2.getModel().getSelectedItem();
         
         jf.add(panel).setBackground(Color.WHITE);
         GroupLayout panelLayout = new GroupLayout(panel);
@@ -185,13 +186,11 @@ public class EnterValuesWindow {
         
         jf.setVisible(true);
         
-        masU = new int[columns];
-        masV = new int[rows];
-        moneyMN = new int[rows+1][columns+1];
-        
-        /*for(int i = 0; i < model1.getColumnCount(); i++) {
-            Object valueAt1 = model1.getValueAt(i, 0);
-            masU[i] = (int) valueAt1;
-        }     */
+        cb1.addActionListener((ActionEvent e) -> {
+            Object selectedItem3 = cb1.getSelectedItem();
+        });
+        cb1.addActionListener((ActionEvent e) -> {
+            Object selectedItem3 = cb2.getSelectedItem();
+        });
     }
 }

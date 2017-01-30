@@ -1,11 +1,7 @@
 package application;
 
-import java.util.Scanner;
-
 public class NorthwestCorner {
     
-    int predloj;//предложение -i-строки
-    int spros;//спрос - j - столбцы
     int[][] moneyMN;
     int[][] xMN;
     int[] masU;
@@ -21,64 +17,52 @@ public class NorthwestCorner {
     int kolTochek = 0;
     int Z=0;
 
-    public void setSprosPredlozhenie() {
-        Scanner kons = new Scanner(System.in);
-        System.out.print("Количество предложений: ");
-        predloj = kons.nextInt();
-        System.out.print("Количество спроса: ");
-        spros = kons.nextInt();
-    }
+    private Integer rows, columns;//предложение -i-строки, спрос - j - столбцы
+    
 
     public void setMoneyNM() {
+        
         int balan1 = 0, balan2 = 0;
-        masU = new int[predloj];
-        for (int i = 0; i < predloj; i++) {
+        masU = new int[rows];
+        for (int i = 0; i < columns; i++) {
             masU[i] = 999999;
         }
-        masV = new int[spros];
-        for (int i = 0; i < spros; i++) {
+        masV = new int[rows];
+        for (int i = 0; i < rows; i++) {
             masV[i] = 999999;
         }
-        Scanner kons = new Scanner(System.in);
-        moneyMN = new int[predloj + 1][spros + 1];
-        xMN = new int[predloj + 1][spros + 1];
-        for (int i = 0; i < predloj; i++) {
-            for (int j = 0; j < spros; j++) {
+        moneyMN = new int[columns + 1][rows + 1];
+        xMN = new int[columns + 1][rows + 1];
+        for (int i = 0; i < columns; i++) {
+            for (int j = 0; j < rows; j++) {
                 xMN[i][j] = 0;
             }
         }
 
-        for (int i = 0; i < predloj; i++) {
-            System.out.print("Введите стоимость перевозок для " + (i + 1) + "го предложения: ");
-            String money = kons.nextLine();
-            String sp[] = money.split(" ");
-            for (int j = 0; j < spros; j++) {
-                moneyMN[i][j] = Integer.parseInt(sp[j]);
+        for (int i = 0; i < columns; i++) {
+            for (int j = 0; j < rows; j++) {
+                moneyMN[i][j] = 0;//вставить
             }
         }
 
         System.out.print("Введите значения предложений: ");
-        String pred = kons.nextLine();
-        String pr[] = pred.split(" ");
-        for (int i = 0; i < predloj; i++) {
-            moneyMN[i][spros] = Integer.parseInt(pr[i]);
-            xMN[i][spros] = moneyMN[i][spros];
-            balan1 += Integer.parseInt(pr[i]);
+        for (int i = 0; i < columns; i++) {
+            moneyMN[i][rows] = 0;//вставить
+            xMN[i][rows] = moneyMN[i][rows];
+            balan1 += 0;//вставить
         }
 
         System.out.print("Введите значения спроса: ");
-        String spros = kons.nextLine();
-        String spr[] = spros.split(" ");
-        for (int j = 0; j < this.spros; j++) {
-            moneyMN[predloj][j] = Integer.parseInt(spr[j]);
-            xMN[predloj][j] = moneyMN[predloj][j];
-            balan2 += Integer.parseInt(spr[j]);
+        for (int j = 0; j < this.rows; j++) {
+            moneyMN[columns][j] = 0;//вставить
+            xMN[columns][j] = moneyMN[columns][j];
+            balan2 += 0;//вставить
         }
 
         if (balan1 == balan2) {
             System.out.println("Задача сбалансирована " + balan1 + " = " + balan2);
-            for (int i = 0; i < predloj + 1; i++) {
-                for (int j = 0; j < this.spros + 1; j++) {
+            for (int i = 0; i < columns + 1; i++) {
+                for (int j = 0; j < this.rows + 1; j++) {
                     System.out.print(moneyMN[i][j] + "\t");
                 }
                 System.out.println();
@@ -87,9 +71,9 @@ public class NorthwestCorner {
     }
 
     public void getxMN() {
-        System.out.println("Метод северо-западного угла:");
-        for (int i = 0; i < predloj + 1; i++) {
-            for (int j = 0; j < spros + 1; j++) {
+        
+        for (int i = 0; i < columns + 1; i++) {
+            for (int j = 0; j < rows + 1; j++) {
                 System.out.print(xMN[i][j] + "\t");
             }
             System.out.println();
@@ -97,31 +81,33 @@ public class NorthwestCorner {
     }
 
     public void poiskbazper(int i, int j) {
-        xMN[i][j] = Math.min(xMN[i][spros], xMN[predloj][j]);
-        xMN[i][spros] -= xMN[i][j];
-        xMN[predloj][j] -= xMN[i][j];
-        if (xMN[i][spros] == 0 & xMN[predloj][j] != 0) {
+        
+        xMN[i][j] = Math.min(xMN[i][rows], xMN[columns][j]);
+        xMN[i][rows] -= xMN[i][j];
+        xMN[columns][j] -= xMN[i][j];
+        if (xMN[i][rows] == 0 & xMN[columns][j] != 0) {
             poiskbazper(i + 1, j);
         }
-        if (xMN[i][spros] != 0 & xMN[predloj][j] == 0) {
+        if (xMN[i][rows] != 0 & xMN[columns][j] == 0) {
             poiskbazper(i, j + 1);
         }
-        pyti = new int[predloj + 1][spros + 1];
-        for (i = 0; i < predloj + 1; i++) {
-            for (j = 0; j < spros + 1; j++) {
+        pyti = new int[columns + 1][rows + 1];
+        for (i = 0; i < columns + 1; i++) {
+            for (j = 0; j < rows + 1; j++) {
                 pyti[i][j] = xMN[i][j];
             }
         }
     }
 
     public boolean vse(){ //проеряет, все ли мы нашли потенциалы, вернет true если все, иначе false
+        
         boolean ot = true;
-        for (int i = 0; i < predloj; i++) {
+        for (int i = 0; i < columns; i++) {
            if(masU[i] == 999999) {
            ot = false;
                break;}
         }
-        for (int i = 0; i < spros; i++) {
+        for (int i = 0; i < rows; i++) {
             if(masV[i] == 999999) {
            ot = false;
                break;}
@@ -129,11 +115,11 @@ public class NorthwestCorner {
         return ot;
     }
 
-    public void potenshialBaz() {
+    private void potenshialBaz() {
        int k = 0;
        while (!vse())
-        {for (int i = 0; i < predloj; i++) {
-            for (int j = 0; j < spros; j++) {
+        {for (int i = 0; i < columns; i++) {
+            for (int j = 0; j < rows; j++) {
                if (xMN[i][j] != 0 & !flagfirstX) {
                     masU[i] = 0;
                     k = i;
@@ -157,8 +143,8 @@ public class NorthwestCorner {
         }
     }
         int Z1=0;
-        for (int i = 0; i < predloj; i++) {
-            for (int j = 0; j < spros; j++) {
+        for (int i = 0; i < columns; i++) {
+            for (int j = 0; j < rows; j++) {
                 if (xMN[i][j] != 0  & xMN[i][j] != 8888888){
                     Z1 += xMN[i][j] * moneyMN[i][j];
                 }
@@ -167,19 +153,19 @@ public class NorthwestCorner {
         System.out.println("Оптимальное решение Z = " + Z1 + " ус. ед.");
         Z=Z1;
         flagfirstX = false;
-        for (int i = 0; i < predloj; i++) {
+        for (int i = 0; i < columns; i++) {
             System.out.println("U[" + (i + 1) + "] = " + masU[i]);
         }
-        for (int j = 0; j < spros; j++) {
+        for (int j = 0; j < rows; j++) {
             System.out.println("V[" + (j + 1) + "] = " + masV[j]);
         }
     }
 
-    public boolean potenshialNotBaz() {     //если нет больше положительных вернет false
+    private boolean potenshialNotBaz() {     //если нет больше положительных вернет false
         int perN = 0; 
         int per = 0;
-        for (int i = 0; i < predloj; i++) {
-            for (int j = 0; j < spros; j++) {
+        for (int i = 0; i < columns; i++) {
+            for (int j = 0; j < rows; j++) {
 
                 if (xMN[i][j] == 0) {
                     per = masU[i] + masV[j] - moneyMN[i][j];
@@ -192,10 +178,10 @@ public class NorthwestCorner {
                 }
             }
         }
-        for (int i = 0; i < predloj; i++) {
+        for (int i = 0; i < columns; i++) {
             masU[i] = 999999;
         }
-        for (int i = 0; i < spros; i++) {
+        for (int i = 0; i < rows; i++) {
             masV[i] = 999999;
         }
           //заполним вводимую в базис переенную значением
@@ -218,8 +204,8 @@ public class NorthwestCorner {
     public void pereshet() {
       int kol = 0;
         //фиксирую столбец и бегаю по столбцу
-        for (int j = 0, i; j < spros; j++) {
-            for (i = 0; i < predloj; i++) {
+        for (int j = 0, i; j < rows; j++) {
+            for (i = 0; i < columns; i++) {
                 if (pyti[i][j] != 0) {
                     kol++;
                 }
@@ -234,8 +220,8 @@ public class NorthwestCorner {
             kol = 0;
         }
         //фиксирую строчку и бегаю по ней
-        for (int i = 0, j; i < predloj; i++) {
-            for (j = 0; j < spros; j++) {
+        for (int i = 0, j; i < columns; i++) {
+            for (j = 0; j < rows; j++) {
                 if (pyti[i][j] != 0) {
                     kol++;
                 }
@@ -252,7 +238,7 @@ public class NorthwestCorner {
     }
 
     public void cleanSTR(int i) {
-        for (int j = 0; j < spros; j++) {
+        for (int j = 0; j < rows; j++) {
             if (pyti[i][j] != 0) {
                 pyti[i][j] = 0;
             }
@@ -260,7 +246,7 @@ public class NorthwestCorner {
     }
 
     public void cleanSTOl(int j) {
-        for (int i = 0; i < predloj; i++) {
+        for (int i = 0; i < columns; i++) {
             if (pyti[i][j] != 0) {
                 pyti[i][j] = 0;
             }
@@ -269,8 +255,8 @@ public class NorthwestCorner {
 
     public boolean proverkaround() {
         boolean flag = true;
-        for (int j = 0; j < spros; j++) {
-            if (pyti[predloj][j] == 1) {
+        for (int j = 0; j < rows; j++) {
+            if (pyti[columns][j] == 1) {
                 flag = false;
                 break;
             }
@@ -279,8 +265,8 @@ public class NorthwestCorner {
             return false;
         } 
         else {
-            for (int i = 0; i < predloj; i++) {
-                if (pyti[i][spros] == 1) {
+            for (int i = 0; i < columns; i++) {
+                if (pyti[i][rows] == 1) {
                     flag = false;
                     break;
                 }
@@ -292,14 +278,14 @@ public class NorthwestCorner {
         return flag;
     }
 
-    public void forWay() {
+    private void forWay() {
        cleanTable();
         while (!proverkaround()) {
             cleanTable();
         }
         System.out.println("Для пути:");
-        for (int i = 0; i < predloj; i++) {
-            for (int j = 0; j < spros; j++) {
+        for (int i = 0; i < columns; i++) {
+            for (int j = 0; j < rows; j++) {
                 if(pyti[i][j] == 99999){
                     System.out.print("*" + "\t");}
                 else{
@@ -311,8 +297,8 @@ public class NorthwestCorner {
             }
             System.out.println();
         }
-        for (int i = 0; i < predloj; i++) {
-            for (int j = 0; j < spros; j++) {
+        for (int i = 0; i < columns; i++) {
+            for (int j = 0; j < rows; j++) {
                 if (pyti[i][j] != 0) {
                     kolTochek++;
                 }
@@ -337,10 +323,10 @@ public class NorthwestCorner {
 
     public String poiskBSprava(int sr, int st) {
         String ret = "null";
-        if (st == spros - 1) {
+        if (st == rows - 1) {
             return ret;
         } else {
-            for (int j = st + 1; j < spros; j++) {
+            for (int j = st + 1; j < rows; j++) {
                 if (pyti[sr][j] != 0) {
                     ret = sr + "." + st + "." + sr + "." + j;
 
@@ -367,10 +353,10 @@ public class NorthwestCorner {
 
     public String poiskBSnizy(int sr, int st) {
         String ret = "null";
-        if (sr == predloj - 1) {
+        if (sr == columns - 1) {
             return ret;
         } else {
-            for (int i = sr + 1; i < predloj; i++) {
+            for (int i = sr + 1; i < columns; i++) {
                 if (pyti[i][st] != 0) {
                     ret = sr + "." + st + "." + i + "." + st;
 
@@ -414,7 +400,7 @@ public class NorthwestCorner {
         children += bi + "." + bj + ".";
     }
     
-    public void WayZamknut() {
+    private void WayZamknut() {
         if (!poiskBSleva(kI, kJ).equals("null")) {
             pytuperem = poiskBSleva(kI, kJ);
         } 
@@ -442,9 +428,9 @@ public class NorthwestCorner {
         }
     }
     
-    public void begay() {
-    for (int i = 0; i < predloj; i++) {
-            for (int j = 0; j < spros; j++) {
+    private void begay() {
+    for (int i = 0; i < columns; i++) {
+            for (int j = 0; j < rows; j++) {
                 if (pyti[i][j] == 8888888) {
                     xMN[i][j] = 0;
                 pyti[i][j] = 0;
@@ -500,14 +486,17 @@ public class NorthwestCorner {
         System.out.println("Выводимая из БП х[" + (vonI + 1) + "][" + (vonJ + 1) + "]");
         kolTochek = 0;
        // System.out.println("После вывода:");
-        for (int i = 0; i < predloj; i++) {
-            for (int j = 0; j < spros; j++) {
+        for (int i = 0; i < columns; i++) {
+            for (int j = 0; j < rows; j++) {
                 pyti[i][j] = xMN[i][j];
             }
         }
     }
     
-    public void itog(){
+    public NorthwestCorner(Integer spros, Integer predloj){
+        
+        rows = spros; columns = predloj;
+        
         while(potenshialNotBaz()){
             forWay();
             WayZamknut();
@@ -516,8 +505,8 @@ public class NorthwestCorner {
         }
         System.out.println("Отрицательных потенциалов нет\nНевозможно уменьшить стоимость доставки продукции");
         System.out.println("Ответ:");
-        for (int i = 0; i < predloj; i++) {
-            for (int j = 0; j < spros; j++) {
+        for (int i = 0; i < columns; i++) {
+            for (int j = 0; j < rows; j++) {
                 System.out.print(xMN[i][j] + "\t");
             }
             System.out.println();
