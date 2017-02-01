@@ -2,7 +2,6 @@ package application;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -20,10 +19,9 @@ import javax.swing.table.DefaultTableModel;
 
 public class EnterValuesWindow {
 
-    private int[][] moneyMN;
+    private final int[][] moneyMN;
     private int[] masU;
     private int[] masV;
-    private String[] columnNames;
     
     public EnterValuesWindow(Integer row, Integer column) {
         
