@@ -20,15 +20,12 @@ import javax.swing.table.DefaultTableModel;
 
 public class EnterValuesWindow {
 
-    private final Integer rows, columns;
-    private final DefaultTableModel model1, model2, model3;
+    private int[][] moneyMN;
+    private int[] masU;
+    private int[] masV;
+    private String[] columnNames;
     
     public EnterValuesWindow(Integer row, Integer column) {
-        
-        rows = row; columns = column;
-        model1 = new DefaultTableModel(1, columns);
-        model2 = new DefaultTableModel(1, rows);
-        model3 = new DefaultTableModel(rows, columns);
         
         JFrame jf = new JFrame();
         jf.setTitle("Транспортная задача");
@@ -48,9 +45,9 @@ public class EnterValuesWindow {
         JLabel text4 = new JLabel("Заполните таблицу издержек");
         JLabel text5 = new JLabel("Метод нахождения опорного плана");
         JLabel text6 = new JLabel("Целевая функция");
-        JTable table1 = new JTable(model1);
-        JTable table2 = new JTable(model2);
-        JTable table3 = new JTable(model3);
+        JTable table1 = new JTable(new DefaultTableModel(new Object[column], 1));
+        JTable table2 = new JTable(new DefaultTableModel(new Object[row], 1));
+        JTable table3 = new JTable(new DefaultTableModel(new Object[column], row));
         JCheckBox checkBox1 = new JCheckBox();
         JButton button = new JButton("Решить");
         
@@ -76,9 +73,6 @@ public class EnterValuesWindow {
         table1.getTableHeader().setResizingAllowed(false);//Запрет на изменение ширины столбцов
         table2.getTableHeader().setResizingAllowed(false);
         table3.getTableHeader().setResizingAllowed(false);
-        
-        Object selectedItem1 = cb1.getModel().getSelectedItem();
-        Object selectedItem2 = cb2.getModel().getSelectedItem();
         
         jf.add(panel).setBackground(Color.WHITE);
         GroupLayout panelLayout = new GroupLayout(panel);
@@ -186,11 +180,28 @@ public class EnterValuesWindow {
         
         jf.setVisible(true);
         
-        cb1.addActionListener((ActionEvent e) -> {
-            Object selectedItem3 = cb1.getSelectedItem();
-        });
-        cb1.addActionListener((ActionEvent e) -> {
-            Object selectedItem3 = cb2.getSelectedItem();
-        });
+        moneyMN = new int[row][column];
+        
+        for(int i = 0; i < table3.getRowCount(); i++){
+            for(int j = 0; j < table3.getColumnCount(); j++){
+                moneyMN[i][j] = (Integer) table3.getModel().getValueAt(i, j);
+            }
+        }
+        
+        /*button.addActionListener((ActionEvent e) -> {
+            jf.setVisible(false);
+            cb1.addActionListener((ActionEvent ex) -> {
+                String selectedItemCb = (String) cb1.getSelectedItem();
+                if(selectedItemCb == "Северо-Западного угла"){
+                    if(checkBox1.isSelected()){
+                        new SolutionTheNorthwestCorner();//
+                    }
+                }
+            });
+        });*/
+        
+        /*cb1.addActionListener((ActionEvent e) -> {
+            Object selectedItem3 = cb2.getModel().getSelectedItem();
+        });*/
     }
 }
