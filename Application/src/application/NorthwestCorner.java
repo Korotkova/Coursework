@@ -17,7 +17,7 @@ public class NorthwestCorner {
     int kolTochek = 0;
     int Z=0;
 
-    private Integer rows, columns;//предложение -i-строки, спрос - j - столбцы
+    Integer rows, columns;//предложение -i-строки, спрос - j - столбцы
     
 
     public void setMoneyNM() {
