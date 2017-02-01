@@ -186,6 +186,16 @@ public class EnterValuesWindow {
             }
         }
         
+        masU = new int[row];
+        for(int i = 0; i < table1.getRowCount(); i++){
+            masU[i] = (Integer) table1.getModel().getValueAt(i, 0);
+        }
+        
+        masV = new int[column];
+        for(int j = 0; j < table2.getColumnCount(); j++){
+            masV[j] = (Integer) table2.getModel().getValueAt(j, 0);
+        }
+        
         /*button.addActionListener((ActionEvent e) -> {
             jf.setVisible(false);
             cb1.addActionListener((ActionEvent ex) -> {
