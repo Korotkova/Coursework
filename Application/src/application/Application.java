@@ -38,9 +38,6 @@ public class Application {
         JSpinner spinner1 = new JSpinner(numberModel1);
         JSpinner spinner2 = new JSpinner(numberModel2);
         
-        //rows = numberModel1.getNumber().intValue();
-        //columns = spinner2.getComponentCount();
-        
         text1.setFont(new Font("Tahoma", 1, 24));
         text2.setFont(new Font("Tahoma", 1, 12)); 
         text3.setFont(new Font("Tahoma", 1, 18));

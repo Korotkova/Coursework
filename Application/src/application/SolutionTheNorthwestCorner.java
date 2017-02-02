@@ -15,7 +15,7 @@ import javax.swing.table.DefaultTableModel;
 
 class SolutionTheNorthwestCorner {
 
-    public SolutionTheNorthwestCorner() {
+    public SolutionTheNorthwestCorner(Integer rows, Integer columns) {
         
         JFrame jf = new JFrame();
         jf.setTitle("Решение Метода Северо-Западного угла");
@@ -46,20 +46,7 @@ class SolutionTheNorthwestCorner {
         JButton button = new JButton();
 
         table1.setFont(new Font("Tahoma", 0, 18)); 
-        table1.setModel(new DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "1", "2", "3", "4", "5", "6", "7"
-            }
-        ) {
+        table1.setModel(new DefaultTableModel(new Object [rows+1][columns+1], new String [] {"1", "2", "3", "4", "5", "6", "7"}) {
             Class[] types = new Class [] {
                 java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class
             };

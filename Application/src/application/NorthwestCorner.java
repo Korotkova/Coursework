@@ -15,7 +15,7 @@ public class NorthwestCorner {
     String pytuperem;
     String children;//для запоминания ячеек
     int kolTochek = 0;
-    int Z=0;
+    int Z = 0;
 
     Integer rows, columns;//предложение -i-строки, спрос - j - столбцы
     
