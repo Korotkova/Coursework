@@ -2,6 +2,7 @@ package application;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -19,9 +20,12 @@ import javax.swing.table.DefaultTableModel;
 
 public class EnterValuesWindow {
 
-    NorthwestCorner nwc;
-    int[] masU;
-    int[] masV;
+    public int[] masU;
+    public int[] masV;
+    public int[][] money;
+    private final DefaultTableModel model1, model2, model3;
+    private static JTable table1, table2, table3;
+    private JCheckBox checkBox1;
     
     public EnterValuesWindow(Integer row, Integer column) {
         
@@ -30,6 +34,27 @@ public class EnterValuesWindow {
         jf.setDefaultCloseOperation(EXIT_ON_CLOSE);
         jf.setBounds(300,200,500, 300);
         jf.setResizable(false);
+        
+        model1 = new DefaultTableModel(new Object[column], 1){
+                @Override
+                public Class<?> getColumnClass(int columnIndex) {
+                    return Integer.class;
+                }
+        };
+        
+        model2 = new DefaultTableModel(new Object[row], 1){
+                @Override
+                public Class<?> getColumnClass(int columnIndex) {
+                    return Integer.class;
+                }
+        };
+        
+        model3 = new DefaultTableModel(new Integer[column], row){
+                @Override
+                public Class<?> getColumnClass(int columnIndex) {
+                    return Integer.class;
+                }
+        };
         
         JScrollPane jScrollPane1 = new JScrollPane();
         JScrollPane jScrollPane2 = new JScrollPane();
@@ -43,50 +68,10 @@ public class EnterValuesWindow {
         JLabel text4 = new JLabel("Заполните таблицу издержек");
         JLabel text5 = new JLabel("Метод нахождения опорного плана");
         JLabel text6 = new JLabel("Целевая функция");
-        JTable table1 = new JTable(new DefaultTableModel(new Object[column], 1){
-                @Override
-                public Class<?> getColumnClass(int columnIndex) {
-                    return Integer.class;
-                }
-        });
-        JTable table2 = new JTable(new DefaultTableModel(new Object[row], 1){
-                @Override
-                public Class<?> getColumnClass(int columnIndex) {
-                    return Integer.class;
-                }
-        });
-        JTable table3 = new JTable(new DefaultTableModel(new Object[column], row){
-            
-                public Class<?> getColumnClass(int columnIndex) {
-                    return Integer.class;
-                }
-                public int getRowCount() {
-                    return nwc.xMN.length;
-                }
-                public int getColumnCount() {
-                    return nwc.xMN[0].length;
-                }
-                public Object getValueAt(int row, int col) {
-                    if(col == 0 && row != getRowCount() - 1) {return row + 1;}
-                    if(col == getColumnCount()-1 && row == getRowCount()-1) {return "";}
-                    if(col == 0) {return "";}
-                    if(col == getColumnCount()-1) {return masU[row];}
-                    if(row == getRowCount()-1 && col != getColumnCount()-1) {return nwc.masV[col-1];}
-                    if(col != 0 && row != getRowCount()-1 && col != getColumnCount()-1) {return nwc.xMN[row][col - 1];}
-                    return "";
-                }
-
-                public boolean isCellEditable(int rowIndex, int columnIndex) {
-                    return true;
-                }
-
-                public void setValueAt(Object val, int row, int col) {
-                    if(row == getRowCount()-1) {nwc.masV[col-1] = Integer.parseInt(val.toString()); return;}
-                    if(col == getColumnCount()-1) {nwc.masU[row] = Integer.parseInt(val.toString()); return;}
-                    nwc.xMN[row][col-1] = Integer.parseInt(val.toString());
-                }
-        });
-        JCheckBox checkBox1 = new JCheckBox();
+        table1 = new JTable(model1);
+        table2 = new JTable(model2);
+        table3 = new JTable(model3);
+        checkBox1 = new JCheckBox();
         JButton button = new JButton("Решить");
         
         cb1.setModel(new DefaultComboBoxModel<>(new String[] { "Северо-Западного угла", "Аппроксимации Фогеля", "Минимального элемента", "Максимального элемента" }));
@@ -218,20 +203,24 @@ public class EnterValuesWindow {
         
         jf.setVisible(true);
         
-        /*button.addActionListener((ActionEvent e) -> {
-            jf.setVisible(false);
-            cb1.addActionListener((ActionEvent ex) -> {
-                String selectedItemCb = (String) cb1.getSelectedItem();
-                if(selectedItemCb == "Северо-Западного угла"){
-                    if(checkBox1.isSelected()){
-                        new SolutionTheNorthwestCorner(row, column);
-                    }
+        button.addActionListener((ActionEvent e) -> {
+            masU = new int[row];
+            for(int i = 0; i < table2.getColumnCount(); i++){
+                masU[i] = (int) model2.getValueAt(0, i);
+            }
+            masV = new int[column];
+            for(int i = 0; i < table1.getColumnCount(); i++){
+                masV[i] = (int) model1.getValueAt(0, i);
+            }
+            money = new int[row][column];
+            for(int i = 0; i < table3.getRowCount(); i++){
+                for(int j = 0; j < table3.getColumnCount(); j++){
+                    money[i][j] = (int) model3.getValueAt(i, j);
                 }
-            });
-        });*/
-        
+            }
+        });
         /*cb1.addActionListener((ActionEvent e) -> {
-            Object selectedItem3 = cb2.getModel().getSelectedItem();
+        Object selectedItem3 = cb2.getModel().getSelectedItem();
         });*/
     }
 }
