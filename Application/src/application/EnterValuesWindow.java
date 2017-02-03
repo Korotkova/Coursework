@@ -32,7 +32,7 @@ public class EnterValuesWindow {
         JFrame jf = new JFrame();
         jf.setTitle("Транспортная задача");
         jf.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        jf.setBounds(300,200,500, 300);
+        jf.setBounds(300, 200, 500, 300);
         jf.setResizable(false);
         
         model1 = new DefaultTableModel(new Object[column], 1){
@@ -218,6 +218,7 @@ public class EnterValuesWindow {
                     money[i][j] = (int) model3.getValueAt(i, j);
                 }
             }
+            //checkBox1
         });
         /*cb1.addActionListener((ActionEvent e) -> {
         Object selectedItem3 = cb2.getModel().getSelectedItem();
