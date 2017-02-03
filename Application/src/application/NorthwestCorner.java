@@ -2,7 +2,7 @@ package application;
 
 public final class NorthwestCorner {
     
-    Integer rows, columns;//спрос - j - столбцы
+    Integer rows, columns;
     EnterValuesWindow ew = new EnterValuesWindow(rows, columns);    
     int[][] xMN;//опорный план
     boolean flagfirstX = false; // как только найдем первую базисную делаем true
