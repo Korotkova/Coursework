@@ -1,18 +1,5 @@
 package application;
 
-import java.awt.Font;
-import javax.swing.GroupLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import static javax.swing.JFrame.EXIT_ON_CLOSE;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.LayoutStyle;
-import javax.swing.table.DefaultTableModel;
-
 public final class NorthwestCorner {
     
     Integer rows, columns;
@@ -29,7 +16,7 @@ public final class NorthwestCorner {
     int kolTochek = 0;
     int Z=0;
 
-    public void setMoneyNM() {
+    public void setMoneyNM() {//расчет баланса и опорного плана
         int balan1 = 0, balan2 = 0;
         for (int i = 0; i < rows; i++) {
             ew.masU[i] = 999999;
@@ -68,7 +55,7 @@ public final class NorthwestCorner {
         }
     }
 
-    public void getxMN() {
+    public void getxMN() {//печать опрного плана
         for (int i = 0; i < rows + 1; i++) {
             for (int j = 0; j < columns + 1; j++) {
                 System.out.print(xMN[i][j] + "\t");//поместить в JTable2
@@ -110,7 +97,7 @@ public final class NorthwestCorner {
         return ot;
     }
 
-    public void potenshialBaz() {
+    public void potenshialBaz() {//расчет ЦФ и нахождение потенциалов U,V
        int k = 0;
        while (!vse())
         {for (int i = 0; i < rows; i++) {
@@ -270,12 +257,12 @@ public final class NorthwestCorner {
         return flag;
     }
 
-    public void forWay() {
+    public void forWay() {//ставит метку *
        cleanTable();
         while (!proverkaround()) {
             cleanTable();
         }
-        System.out.println("Для пути:");
+        System.out.println("Для пути:");//поместить в JTabble3
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 if(pyti[i][j] == 99999){
@@ -358,7 +345,7 @@ public final class NorthwestCorner {
         return ret;
     }
 
-    public void SLedyushi(String parakey) {
+    public void SLedyushi(String parakey) {//идет пока не нвйдет нужное
         String sp[] = parakey.split("\\.");
         int IP = Integer.parseInt(sp[0]);
         int JP = Integer.parseInt(sp[1]);
@@ -391,7 +378,7 @@ public final class NorthwestCorner {
         children += bi + "." + bj + ".";
     }
     
-    public void WayZamknut() {
+    public void WayZamknut() {//строит замкнутый путь
         if (!poiskBSleva(kI, kJ).equals("null")) {
             pytuperem = poiskBSleva(kI, kJ);
         } 
@@ -419,7 +406,7 @@ public final class NorthwestCorner {
         }
     }
     
-    public void begay() {
+    public void begay() {//ищет и рассчитывает значения БП со знаком "-"/"+" и выводимую из БП
     for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 if (pyti[i][j] == 8888888) {
@@ -445,7 +432,7 @@ public final class NorthwestCorner {
             }
         }
         System.out.println("Минимальное значение БП со знаком \"-\": " + minOTRIc);
-        //теперь отнимаю минимальное у "-"
+        //отнимаю минимальное у "-"
         for (int i = 0; i < xyT.length;) {
             xMN[xyT[i]][xyT[i + 1]] -= minOTRIc;
             if (i % 2 == 0) {
