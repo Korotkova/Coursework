@@ -4,7 +4,7 @@ public class OnlyAnswer extends javax.swing.JFrame {
 
     public OnlyAnswer() {
         setTitle("Ответ");
-        setBounds(330, 100, 500, 300);
+        setBounds(500, 300, 500, 300);
         setResizable(false);
         initComponents();
         setVisible(true);

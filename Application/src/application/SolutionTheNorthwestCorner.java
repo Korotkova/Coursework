@@ -247,7 +247,7 @@ public class SolutionTheNorthwestCorner extends javax.swing.JFrame {
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         setVisible(false);
-        new PotentialsMethod();
+        new PotentialsMethod().setVisible(true);
     }//GEN-LAST:event_jButton1MouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

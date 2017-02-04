@@ -221,16 +221,34 @@ public class EnterValuesWindow {
                     money[i][j] = (int) model3.getValueAt(i, j);
                 }
             }
-            nc = new NorthwestCorner(row, column);
-            if(nc.balan1 == nc.balan2){
-               jf.setVisible(false);
-                cb1.addActionListener((ActionEvent ex) -> {
-                    cb1.getItemAt(0);
-                    new SolutionTheNorthwestCorner();
-                });
-               
-            //checkBox1 
-            }
+            //if(nc.balan1 == nc.balan2){
+                jf.setVisible(false);
+                if(cb1.getSelectedItem() == cb1.getItemAt(0)){
+                    if(checkBox.getModel().isSelected()){
+                        new SolutionTheNorthwestCorner().setVisible(true);
+                    }
+                    else new OnlyAnswer();
+                }
+                
+                if(cb1.getSelectedItem() == cb1.getItemAt(1)){
+                    if(checkBox.getModel().isSelected()){
+                        //SolutionFogel
+                    }
+                    else new OnlyAnswer();
+                }
+                if(cb1.getSelectedItem() == cb1.getItemAt(2)){
+                    if(checkBox.getModel().isSelected()){
+                        //SolutionMinElement
+                    }
+                    else new OnlyAnswer();
+                }
+                if(cb1.getSelectedItem() == cb1.getItemAt(3)){
+                    if(checkBox.getModel().isSelected()){
+                        //SolutionMaxElement
+                    }
+                    else new OnlyAnswer();
+                }
+            //}
             /*else{
                 new NotBalans();
             }*/
