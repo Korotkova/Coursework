@@ -1,5 +1,7 @@
 package application;
 
+import javax.swing.JTable;
+
 public final class NorthwestCorner {
     
     Integer rows, columns;
@@ -14,17 +16,12 @@ public final class NorthwestCorner {
     String pytuperem;
     String children;//для запоминания ячеек
     int kolTochek = 0;
-    int Z=0;
-
+    int Z = 0;//ЦФ
+    JTable table1, table2, table3, table4;
+    int balan1 = 0, balan2 = 0;
+    
     public void setMoneyNM() {//расчет баланса и опорного плана
-        int balan1 = 0, balan2 = 0;
-        for (int i = 0; i < rows; i++) {
-            ew.masU[i] = 999999;
-        }
-        for (int i = 0; i < columns; i++) {
-            ew.masV[i] = 999999;
-        }
-        ew.money = new int[rows + 1][columns + 1];
+        
         xMN = new int[rows + 1][columns + 1];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {

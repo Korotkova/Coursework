@@ -45,7 +45,8 @@ public class Application {
         spinner1.setFont(new Font("Tahoma", 0, 12));
         spinner2.setFont(new Font("Tahoma", 0, 12));
         
-        f.add(panel).setBackground(Color.WHITE); GroupLayout panelLayout = new GroupLayout(panel);
+        f.add(panel).setBackground(Color.WHITE); 
+        GroupLayout panelLayout = new GroupLayout(panel);
         panel.setLayout(panelLayout);
         panelLayout.setHorizontalGroup(
             panelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)

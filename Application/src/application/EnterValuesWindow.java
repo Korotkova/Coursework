@@ -25,7 +25,10 @@ public class EnterValuesWindow {
     public int[][] money;
     private final DefaultTableModel model1, model2, model3;
     private static JTable table1, table2, table3;
-    private JCheckBox checkBox1;
+    private JCheckBox checkBox;
+    private JComboBox cb1;
+    private JComboBox cb2;
+    NorthwestCorner nc;
     
     public EnterValuesWindow(Integer row, Integer column) {
         
@@ -60,8 +63,9 @@ public class EnterValuesWindow {
         JScrollPane jScrollPane2 = new JScrollPane();
         JScrollPane jScrollPane3 = new JScrollPane();
         JPanel panel = new JPanel(); 
-        JComboBox cb1 = new JComboBox();
-        JComboBox cb2 = new JComboBox();
+        cb1 = new JComboBox();
+        cb2 = new JComboBox();
+        checkBox = new JCheckBox();
         JLabel text1 = new JLabel("Введите значения спроса и предложений");
         JLabel text2 = new JLabel(" Спрос");
         JLabel text3 = new JLabel("Предложение");
@@ -71,14 +75,13 @@ public class EnterValuesWindow {
         table1 = new JTable(model1);
         table2 = new JTable(model2);
         table3 = new JTable(model3);
-        checkBox1 = new JCheckBox();
         JButton button = new JButton("Решить");
         
         cb1.setModel(new DefaultComboBoxModel<>(new String[] { "Северо-Западного угла", "Аппроксимации Фогеля", "Минимального элемента", "Максимального элемента" }));
         cb2.setModel(new DefaultComboBoxModel<>(new String[] { "Минимальные затраты", "Максимальные затраты" }));
-        checkBox1.setText("С подробным решением ");
-        checkBox1.setHorizontalTextPosition(SwingConstants.LEFT);
-        checkBox1.setFocusable(false);
+        checkBox.setText("С подробным решением ");
+        checkBox.setHorizontalTextPosition(SwingConstants.LEFT);
+        checkBox.setFocusable(false);
         button.setFocusable(false);
         text1.setFont(new Font("Tahoma", 1, 11));
         text2.setFont(new Font("Tahoma", 0, 12));
@@ -124,7 +127,7 @@ public class EnterValuesWindow {
                                     .addGroup(panelLayout.createSequentialGroup()
                                         .addGap(32, 32, 32)
                                         .addGroup(panelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                            .addComponent(checkBox1)
+                                            .addComponent(checkBox)
                                             .addGroup(panelLayout.createSequentialGroup()
                                                 .addComponent(text5)
                                                 .addGap(32, 32, 32)
@@ -174,7 +177,7 @@ public class EnterValuesWindow {
                                     .addComponent(text6)
                                     .addComponent(cb2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                                 .addGap(32, 32, 32)
-                                .addComponent(checkBox1)
+                                .addComponent(checkBox)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -212,16 +215,25 @@ public class EnterValuesWindow {
             for(int i = 0; i < table1.getColumnCount(); i++){
                 masV[i] = (int) model1.getValueAt(0, i);
             }
-            money = new int[row][column];
+            money = new int[row+1][column+1];
             for(int i = 0; i < table3.getRowCount(); i++){
                 for(int j = 0; j < table3.getColumnCount(); j++){
                     money[i][j] = (int) model3.getValueAt(i, j);
                 }
             }
-            //checkBox1
+            nc = new NorthwestCorner(row, column);
+            if(nc.balan1 == nc.balan2){
+               jf.setVisible(false);
+                cb1.addActionListener((ActionEvent ex) -> {
+                    cb1.getItemAt(0);
+                    new SolutionTheNorthwestCorner();
+                });
+               
+            //checkBox1 
+            }
+            /*else{
+                new NotBalans();
+            }*/
         });
-        /*cb1.addActionListener((ActionEvent e) -> {
-        Object selectedItem3 = cb2.getModel().getSelectedItem();
-        });*/
     }
 }
