@@ -16,7 +16,7 @@ public final class NorthwestCorner {
     String pytuperem;
     String children;//для запоминания ячеек
     int kolTochek = 0;
-    int Z = 0;//ЦФ
+    Integer Z = 0;//ЦФ
     JTable table1, table2, table3, table4;
     int balan1 = 0, balan2 = 0;
     

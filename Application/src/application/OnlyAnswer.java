@@ -2,7 +2,7 @@ package application;
 
 public class OnlyAnswer extends javax.swing.JFrame {
 
-    public OnlyAnswer() {
+    public OnlyAnswer(Integer z) {
         setTitle("Ответ");
         setBounds(500, 300, 500, 300);
         setResizable(false);

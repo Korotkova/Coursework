@@ -215,7 +215,7 @@ public class EnterValuesWindow {
             for(int i = 0; i < table1.getColumnCount(); i++){
                 masV[i] = (int) model1.getValueAt(0, i);
             }
-            money = new int[row+1][column+1];
+            money = new int[row + 1][column + 1];
             for(int i = 0; i < table3.getRowCount(); i++){
                 for(int j = 0; j < table3.getColumnCount(); j++){
                     money[i][j] = (int) model3.getValueAt(i, j);
@@ -223,35 +223,39 @@ public class EnterValuesWindow {
             }
             //if(nc.balan1 == nc.balan2){
                 jf.setVisible(false);
-                if(cb1.getSelectedItem() == cb1.getItemAt(0)){
-                    if(checkBox.getModel().isSelected()){
-                        new SolutionTheNorthwestCorner().setVisible(true);
-                    }
-                    else new OnlyAnswer();
-                }
-                
-                if(cb1.getSelectedItem() == cb1.getItemAt(1)){
-                    if(checkBox.getModel().isSelected()){
-                        //SolutionFogel
-                    }
-                    else new OnlyAnswer();
-                }
-                if(cb1.getSelectedItem() == cb1.getItemAt(2)){
-                    if(checkBox.getModel().isSelected()){
-                        //SolutionMinElement
-                    }
-                    else new OnlyAnswer();
-                }
-                if(cb1.getSelectedItem() == cb1.getItemAt(3)){
-                    if(checkBox.getModel().isSelected()){
-                        //SolutionMaxElement
-                    }
-                    else new OnlyAnswer();
-                }
+                conditionSelection();
             //}
             /*else{
                 new NotBalans();
             }*/
         });
+    }
+    public void conditionSelection(){
+        
+        if(cb1.getSelectedItem() == cb1.getItemAt(0)){
+            if(checkBox.getModel().isSelected()){
+                new SolutionTheNorthwestCorner().setVisible(true);
+            }
+            else new OnlyAnswer(nc.Z);
+        }
+
+        if(cb1.getSelectedItem() == cb1.getItemAt(1)){
+            if(checkBox.getModel().isSelected()){
+                //SolutionFogel
+            }
+            else new OnlyAnswer(nc.Z);
+        }
+        if(cb1.getSelectedItem() == cb1.getItemAt(2)){
+            if(checkBox.getModel().isSelected()){
+                //SolutionMinElement
+            }
+            else new OnlyAnswer(nc.Z);
+        }
+        if(cb1.getSelectedItem() == cb1.getItemAt(3)){
+            if(checkBox.getModel().isSelected()){
+                //SolutionMaxElement
+            }
+            else new OnlyAnswer(nc.Z);
+        }
     }
 }
