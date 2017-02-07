@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Fogel {
     
-    int rows, columns, min1, min2;
+    int rows, columns, min1, min2, min12;
     int[] masU;
     int[] masV;
     int[][] moneyMN;
@@ -88,5 +88,60 @@ public class Fogel {
                 System.out.println();
             }
         }
+        //difcolumn(moneyMN);
+        //System.out.println();
+        difrow(moneyMN);
+    }
+    
+    public void difcolumn(int[][]mon){
+        difcol = new int[rows];
+        for(int i = 0; i < rows; i++) {
+            min1 = mon[i][0];
+            min2 = mon[i][1];
+            for(int j = 2; j < columns; j++){
+                if(mon[i][j] < min2) {
+                    if(mon[i][j] < min1) {
+                            if(min1 < min2)
+                                min2 = mon[i][j];
+                            else min1 = mon[i][j];
+                    }
+                    else min2 = mon[i][j];
+                }
+                else if(mon[i][j] < min1)   min1 = mon[i][j];
+                }
+            min12 = Math.abs(min1 - min2);
+            difcol[i] += min12;
+        }
+        for(int i = 0; i < difcol.length; i++){
+            System.out.print(difcol[i] + "\t");
+        }
+        System.out.println();
+    }
+    
+    public void difrow(int[][]mon){
+        difrow = new int[columns];
+        for(int i = 0; i < columns; i++) {
+            min1 = mon[0][i];
+            min2 = mon[1][i];
+            for(int j = 0; j < rows - 1; j++){
+                if(mon[i][j] < min2) {
+                    if(mon[i][j] < min1) {
+                            if(min1 < min2)
+                                min2 = mon[i][j];
+                            else min1 = mon[i][j];
+                    }
+                    else min2 = mon[i][j];
+                }
+                else if(mon[i][j] < min1)   min1 = mon[i][j];
+                }
+            System.out.println(min1 + "\t" + min2);
+            min12 = Math.abs(min1 - min2);
+            System.out.println(min12);
+            difrow[i] += min12;
+        }
+        for(int i = 0; i < difrow.length; i++){
+            System.out.print(difrow[i] + "\t");
+        }
+        System.out.println();
     }
 }
