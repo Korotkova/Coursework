@@ -91,13 +91,11 @@ public class Fogel {
                 System.out.println();
             }
         }
-        for(int i = 0; i < rows+2; i++){
-            if(i == moneyMN.length+2){
-                moneyMN[i][columns] = difrow[i];
-            }
+         for(int i = 0; i < rows; i++){
+                moneyMN[moneyMN.length - 1][i] = difrow[i];
         }
         for(int j = 0; j < columns; j++){
-            moneyMN[rows][j] = difcol[j];
+            moneyMN[j][moneyMN.length - 1] = difcol[j];
         }
         
         System.out.println("Матрица");
