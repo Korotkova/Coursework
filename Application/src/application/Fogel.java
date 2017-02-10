@@ -80,8 +80,8 @@ public class Fogel {
             balan2 += Integer.parseInt(spr[j]);
         }
 
-        difcolumn(moneyMN);
-        difrow(moneyMN);
+        difcolumn();
+        difrow();
         if (balan1 == balan2) {
             System.out.println("Задача сбалансирована " + balan1 + " = " + balan2);
             for (int i = 0; i < rows + 1; i++) {
@@ -107,22 +107,22 @@ public class Fogel {
         }
     }
     
-    public void difcolumn(int[][]mon){
+    public void difcolumn(){
         difcol = new int[rows];
         System.out.println("Одномерный массив строки");
         for(int i = 0; i < rows; i++) {
-            min1 = mon[i][0];
-            min2 = mon[i][1];
+            min1 = moneyMN[i][0];
+            min2 = moneyMN[i][1];
             for(int j = 2; j < columns; j++){
-                if(mon[i][j] < min2) {
-                    if(mon[i][j] < min1) {
+                if(moneyMN[i][j] < min2) {
+                    if(moneyMN[i][j] < min1) {
                             if(min1 < min2)
-                                min2 = mon[i][j];
-                            else min1 = mon[i][j];
+                                min2 = moneyMN[i][j];
+                            else min1 = moneyMN[i][j];
                     }
-                    else min2 = mon[i][j];
+                    else min2 = moneyMN[i][j];
                 }
-                else if(mon[i][j] < min1)   min1 = mon[i][j];
+                else if(moneyMN[i][j] < min1)   min1 = moneyMN[i][j];
                 }
             min12 = Math.abs(min1 - min2);
             difcol[i] += min12;
@@ -133,22 +133,22 @@ public class Fogel {
         System.out.println();
     }
     
-    public void difrow(int[][]mon){
+    public void difrow(){
         difrow = new int[columns];
         System.out.println("Одномерный массив столбца");
         for(int i = 0; i < columns; i++) {
-            min1 = mon[0][i];
-            min2 = mon[1][i];
+            min1 = moneyMN[0][i];
+            min2 = moneyMN[1][i];
             for(int j = 2; j < rows; j++){
-                if(mon[j][i] < min2) {
-                    if(mon[j][i] < min1) {
+                if(moneyMN[j][i] < min2) {
+                    if(moneyMN[j][i] < min1) {
                             if(min1 < min2)
-                                min2 = mon[j][i];
-                            else min1 = mon[j][i];
+                                min2 = moneyMN[j][i];
+                            else min1 = moneyMN[j][i];
                     }
-                    else min2 = mon[j][i];
+                    else min2 = moneyMN[j][i];
                 }
-                else if(mon[j][i] < min1)   min1 = mon[j][i];
+                else if(moneyMN[j][i] < min1)   min1 = moneyMN[j][i];
                 }
             min12 = Math.abs(min1 - min2);
             difrow[i] += min12;
@@ -159,25 +159,26 @@ public class Fogel {
         System.out.println();
     }
     
-    public void maxRowColumn(int[][] mas){
-        /*for(int i = 0; i < mas.length - 1; i++){
-            max2 = mas[i][0];
-            for(int j = 0; j < mas[i].length - 1; j++){
-                max1 = mas[0][j];
-                if(mas[i][j] > max1)    max1 = mas[i][j];
-                if(mas[i][j] > max2)    max2 = mas[i][j];
-                max3 = Math.max(max1, max2);
+    public void maxRowColumn(){
+        for(int i = 0; i < moneyMN.length; i++){
+            max1 = moneyMN[moneyMN.length-1][i];
+            for(int j = 0; j < moneyMN[i].length; j++){
+                if(moneyMN[i][j] > max1){
+                    max1 = moneyMN[i][j];
+                }
             }
-            System.out.println("Наибольшая из разностей " + max3 + " , но наименьший из тарифов является ");
         }
-            */
-        max1 = difrow[0];
-        max2 = difcol[0];
-        for(int i = 1; i < rows & i < columns; i++){
-            if(difrow[i] > max1) max1 = difrow[i];
-            if(difcol[i] > max2) max2 = difcol[i];
-            max3 = Math.max(max1, max2);
+        System.out.println("Наибольшая из разностей в строке " + max1);
+        for(int i = 0; i < moneyMN.length; i++){
+            max2 = 0;
+            for(int j = 0; j < moneyMN[i].length-1; j++){
+                if((moneyMN[j][i] > moneyMN[j+1][i]) && (moneyMN[j][i] > max2)){
+                    max2 = moneyMN[j][i];
+                }
+            }
         }
-        System.out.println("Наибольшая разность " + max3);
+        System.out.println("Наибольшая из разностей в столбце " + max2);
+        max3 = Math.max(max1, max2);
+        System.out.println("Наибольшая из разностей " + max3);
     }
 }
