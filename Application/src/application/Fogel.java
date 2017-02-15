@@ -4,10 +4,10 @@ import java.util.Scanner;
 
 public class Fogel {
     
-    int rows, columns, min1, min2, min12, max1, max2, max3;
+    int rows, columns, min1, min2, min12, max1, max2, max3 = 0;
     int[] masU;
     int[] masV;
-    int[][] moneyMN;
+    static int[][] moneyMN;
     int[][] xMN;//опорный план
     int[] difcol;//массив разности столбца
     int[] difrow;//массив разности строки
@@ -22,10 +22,7 @@ public class Fogel {
     int kolTochek = 0;
     int Z = 0;//ЦФ
     int balan1 = 0, balan2 = 0;
-    
-    public Fogel() {
-        
-    }  
+    int I = 0, J = 0;//фиксирование строки/столбца, в которых находится max
     
     public void setSprosPredlozhenie() {
         Scanner kons = new Scanner(System.in);
@@ -45,7 +42,7 @@ public class Fogel {
             masV[i] = 999999;
         }
         Scanner kons = new Scanner(System.in);
-        moneyMN = new int[rows + 1][columns + 1];
+        moneyMN = new int[rows + 2][columns + 2];
         xMN = new int[rows + 1][columns + 1];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
@@ -91,14 +88,14 @@ public class Fogel {
                 System.out.println();
             }
         }
-         for(int i = 0; i < rows; i++){
+        for(int i = 0; i < rows; i++){
                 moneyMN[moneyMN.length - 1][i] = difrow[i];
         }
         for(int j = 0; j < columns; j++){
             moneyMN[j][moneyMN.length - 1] = difcol[j];
         }
         
-        System.out.println("Матрица");
+        System.out.println("Метод Фогеля");
         for(int i = 0; i < moneyMN.length; i++){
             for(int j = 0; j < moneyMN[i].length; j++){
                 System.out.print(moneyMN[i][j] + "\t");
@@ -162,23 +159,61 @@ public class Fogel {
     public void maxRowColumn(){
         for(int i = 0; i < moneyMN.length; i++){
             max1 = moneyMN[moneyMN.length-1][i];
-            for(int j = 0; j < moneyMN[i].length; j++){
+            for(int j = 0; j < moneyMN.length; j++){
                 if(moneyMN[i][j] > max1){
                     max1 = moneyMN[i][j];
+                    J = j + 1;
                 }
             }
         }
-        System.out.println("Наибольшая из разностей в строке " + max1);
-        for(int i = 0; i < moneyMN.length; i++){
-            max2 = 0;
-            for(int j = 0; j < moneyMN[i].length-1; j++){
-                if((moneyMN[j][i] > moneyMN[j+1][i]) && (moneyMN[j][i] > max2)){
-                    max2 = moneyMN[j][i];
+        System.out.println("Наибольшая из разностей в строке " + max1 + "   " + J);
+        
+        for(int j = 0; j < moneyMN.length; j++){
+            max2 = moneyMN[j][moneyMN.length-1];
+            for (int i = 0; i < moneyMN.length; i++) {
+                if (moneyMN[i][j] > max2) {
+                    max2 = moneyMN[i][j];
+                    I = i + 1;
                 }
             }
         }
-        System.out.println("Наибольшая из разностей в столбце " + max2);
+        System.out.println("Наибольшая из разностей в столбце " + max2 + "  " + I);
+        
         max3 = Math.max(max1, max2);
         System.out.println("Наибольшая из разностей " + max3);
+    }
+    
+    public void pereshet() {
+        //фиксирую строчку и бегаю по ней
+        int st = 0;
+        for(int i = I; i < moneyMN.length;) {
+            st = moneyMN[i][0];
+            for(int j = 1; j < moneyMN.length; j++){
+                if(moneyMN[i][j] < st)  st = moneyMN[i][j];
+            }
+        }
+        System.out.println(st);
+        //фиксирую столбец и бегаю по столбцу
+        int sl = 0;
+        for (int i = 0; i < moneyMN.length; i++) {
+            sl = moneyMN[0][J];
+            for (int j = J; j < moneyMN.length;) {
+                if(moneyMN[i][j] < sl)  sl = moneyMN[i][j];
+            }
+        }
+        System.out.println(sl);
+    }
+    
+    public void minForMaxRowColumn() {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                if (max3 == moneyMN[i][j]) {
+                    kI = i;
+                    kJ = j;
+                    
+                    System.out.println("Для x[" + (kI + 1) + "][" + (kJ + 1) + "] = " + min1);
+                }
+            }
+        } 
     }
 }
