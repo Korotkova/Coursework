@@ -185,23 +185,23 @@ public class Fogel {
     
     public void pereshet() {
         //фиксирую строчку и бегаю по ней
-        int st = 0;
-        for(int i = I; i < moneyMN.length;) {
-            st = moneyMN[i][0];
-            for(int j = 1; j < moneyMN.length; j++){
-                if(moneyMN[i][j] < st)  st = moneyMN[i][j];
+        int st, t = J - 1;
+        if(max3 == max1){
+            st = moneyMN[0][t];
+            for(int j = 1; j < columns; j++){
+                if (moneyMN[j][t] < st) st = moneyMN[j][t];
             }
+            System.out.println(st);
         }
-        System.out.println(st);
-        //фиксирую столбец и бегаю по столбцу
-        int sl = 0;
-        for (int i = 0; i < moneyMN.length; i++) {
-            sl = moneyMN[0][J];
-            for (int j = J; j < moneyMN.length;) {
-                if(moneyMN[i][j] < sl)  sl = moneyMN[i][j];
+        else if(max3 == max2){
+            //фиксирую столбец и бегаю по столбцу
+            int sl, t1 = I - 1;
+            sl = moneyMN[t1][0];
+            for (int i = 1; i < rows; i++) {
+                if(moneyMN[t1][i] < sl) sl = moneyMN[t1][i];
             }
+            System.out.println(sl);
         }
-        System.out.println(sl);
     }
     
     public void minForMaxRowColumn() {
