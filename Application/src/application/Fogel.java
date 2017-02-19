@@ -4,7 +4,9 @@ import java.util.Scanner;
 
 public class Fogel {
     
-    int rows, columns, min1, min2, min12, max1, max2, max3 = 0;
+    int rows, columns;
+    int min1, min2, min12;//две разности и их разность по abs
+    int max1, max2, max3 = 0;
     int[] masU;
     int[] masV;
     static int[][] moneyMN;
@@ -22,7 +24,9 @@ public class Fogel {
     int kolTochek = 0;
     int Z = 0;//ЦФ
     int balan1 = 0, balan2 = 0;
+    int st, sl;//минимальный в фиксированной строке/столбце
     int I = 0, J = 0;//фиксирование строки/столбца, в которых находится max
+    int I1 = 0, J1 = 0;//второе фиксирование строки/столбца
     
     public void setSprosPredlozhenie() {
         Scanner kons = new Scanner(System.in);
@@ -104,9 +108,8 @@ public class Fogel {
         }
     }
     
-    public void difcolumn(){
+    public void difcolumn(){//поиск разности 2-х минимальных в строках
         difcol = new int[rows];
-        System.out.println("Одномерный массив строки");
         for(int i = 0; i < rows; i++) {
             min1 = moneyMN[i][0];
             min2 = moneyMN[i][1];
@@ -124,15 +127,10 @@ public class Fogel {
             min12 = Math.abs(min1 - min2);
             difcol[i] += min12;
         }
-        for(int i = 0; i < difcol.length; i++){
-            System.out.print(difcol[i] + "\t");
-        }
-        System.out.println();
     }
     
-    public void difrow(){
+    public void difrow(){//поиск разности 2-х минимальных в столбцах
         difrow = new int[columns];
-        System.out.println("Одномерный массив столбца");
         for(int i = 0; i < columns; i++) {
             min1 = moneyMN[0][i];
             min2 = moneyMN[1][i];
@@ -150,15 +148,11 @@ public class Fogel {
             min12 = Math.abs(min1 - min2);
             difrow[i] += min12;
         }
-        for(int i = 0; i < difrow.length; i++){
-            System.out.print(difrow[i] + "\t");
-        }
-        System.out.println();
     }
     
-    public void maxRowColumn(){
+    public void maxRowColumn(){//посик максимального в последней строке/столбца и фиксирование стобца/строки
         for(int i = 0; i < moneyMN.length; i++){
-            max1 = moneyMN[moneyMN.length-1][i];
+            max1 = moneyMN[moneyMN.length - 1][i];
             for(int j = 0; j < moneyMN.length; j++){
                 if(moneyMN[i][j] > max1){
                     max1 = moneyMN[i][j];
@@ -169,7 +163,7 @@ public class Fogel {
         System.out.println("Наибольшая из разностей в строке " + max1 + "   " + J);
         
         for(int j = 0; j < moneyMN.length; j++){
-            max2 = moneyMN[j][moneyMN.length-1];
+            max2 = moneyMN[j][moneyMN.length - 1];
             for (int i = 0; i < moneyMN.length; i++) {
                 if (moneyMN[i][j] > max2) {
                     max2 = moneyMN[i][j];
@@ -183,37 +177,49 @@ public class Fogel {
         System.out.println("Наибольшая из разностей " + max3);
     }
     
-    public void pereshet() {
+    public void minRowsColumns() {//поиск минимального в столбце/строке наибольшего из разностей
         //фиксирую строчку и бегаю по ней
-        int st, t = J - 1;
+        int t = J - 1;
         if(max3 == max1){
             st = moneyMN[0][t];
             for(int j = 1; j < columns; j++){
-                if (moneyMN[j][t] < st) st = moneyMN[j][t];
+                if (moneyMN[j][t] < st){
+                    st = moneyMN[j][t];
+                    I1 = j + 1;
+                }
             }
-            System.out.println(st);
+            System.out.println("В строке " + J + " минимальный элемент = " + st + "\t" + I1);
         }
+        //фиксирую столбец и бегаю по столбцу
         else if(max3 == max2){
-            //фиксирую столбец и бегаю по столбцу
-            int sl, t1 = I - 1;
+            int t1 = I - 1;
             sl = moneyMN[t1][0];
             for (int i = 1; i < rows; i++) {
-                if(moneyMN[t1][i] < sl) sl = moneyMN[t1][i];
+                if(moneyMN[t1][i] < sl){
+                    sl = moneyMN[t1][i];
+                    J1 = i + 1;
+                }
             }
-            System.out.println(sl);
+            System.out.println("В строке " + I + " минимальный элемент = " + sl + "\t" + J1);
         }
     }
     
-    public void minForMaxRowColumn() {
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                if (max3 == moneyMN[i][j]) {
-                    kI = i;
-                    kJ = j;
-                    
-                    System.out.println("Для x[" + (kI + 1) + "][" + (kJ + 1) + "] = " + min1);
-                }
+    public void poiskbazper(int i, int j) {
+        
+        xMN[i][j] = Math.min(xMN[i][columns], xMN[rows][j]);
+        xMN[i][columns] -= xMN[i][j];
+        xMN[rows][j] -= xMN[i][j];
+        if (xMN[i][columns] == 0 & xMN[rows][j] != 0) {
+            poiskbazper(i + 1, j);
+        }
+        if (xMN[i][columns] != 0 & xMN[rows][j] == 0) {
+            poiskbazper(i, j + 1);
+        }
+        pyti = new int[rows + 1][columns + 1];
+        for (i = 0; i < rows + 1; i++) {
+            for (j = 0; j < columns + 1; j++) {
+                pyti[i][j] = xMN[i][j];
             }
-        } 
+        }
     }
 }
