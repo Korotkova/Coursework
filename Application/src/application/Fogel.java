@@ -24,7 +24,7 @@ public class Fogel {
     int kolTochek = 0;
     int Z = 0;//ЦФ
     int balan1 = 0, balan2 = 0;
-    int st, sl;//минимальный в фиксированной строке/столбце
+    int mI, mJ;//минимальный в фиксированной строке/столбце
     int I = 0, J = 0;//фиксирование строки/столбца, в которых находится max
     int I1 = 0, J1 = 0;//второе фиксирование строки/столбца
     
@@ -150,69 +150,43 @@ public class Fogel {
         }
     }
     
-    public void maxRowColumn(){//посик максимального в последней строке/столбца и фиксирование стобца/строки
-        for(int i = 0; i < moneyMN.length; i++){
-            max1 = moneyMN[moneyMN.length - 1][i];
-            for(int j = 0; j < moneyMN.length; j++){
-                if(moneyMN[i][j] > max1){
-                    max1 = moneyMN[i][j];
-                    J = j + 1;
-                }
-            }
-        }
-        System.out.println("Наибольшая из разностей в строке " + max1 + "   " + J);
-        
-        for(int j = 0; j < moneyMN.length; j++){
-            max2 = moneyMN[j][moneyMN.length - 1];
-            for (int i = 0; i < moneyMN.length; i++) {
-                if (moneyMN[i][j] > max2) {
-                    max2 = moneyMN[i][j];
-                    I = i + 1;
-                }
-            }
-        }
-        System.out.println("Наибольшая из разностей в столбце " + max2 + "  " + I);
-        
-        max3 = Math.max(max1, max2);
-        System.out.println("Наибольшая из разностей " + max3);
-    }
-    
     public void minRowsColumns() {//поиск минимального в столбце/строке наибольшего из разностей
         //фиксирую строчку и бегаю по ней
         int t = J - 1;
         if(max3 == max1){
-            st = moneyMN[0][t];
+            mI = moneyMN[0][t];
             for(int j = 1; j < columns; j++){
-                if (moneyMN[j][t] < st){
-                    st = moneyMN[j][t];
+                if (moneyMN[j][t] < mI){
+                    mI = moneyMN[j][t];
                     I1 = j + 1;
                 }
+                else I1 = 1;
             }
-            System.out.println("В строке " + J + " минимальный элемент = " + st + "\t" + I1);
+            System.out.println("В столбце " + J + " минимальный элемент = " + mI + "\t" + I1);
         }
         //фиксирую столбец и бегаю по столбцу
         else if(max3 == max2){
             int t1 = I - 1;
-            sl = moneyMN[t1][0];
+            mJ = moneyMN[t1][0];
             for (int i = 1; i < rows; i++) {
-                if(moneyMN[t1][i] < sl){
-                    sl = moneyMN[t1][i];
+                if(moneyMN[t1][i] < mJ){
+                    mJ = moneyMN[t1][i];
                     J1 = i + 1;
                 }
+                else J1 = i;
             }
-            System.out.println("В строке " + I + " минимальный элемент = " + sl + "\t" + J1);
+            System.out.println("В строке " + I + " минимальный элемент = " + mJ + "\t" + J1);
         }
     }
     
     public void poiskbazper(int i, int j) {
-        
-        xMN[i][j] = Math.min(xMN[i][columns], xMN[rows][j]);
-        xMN[i][columns] -= xMN[i][j];
-        xMN[rows][j] -= xMN[i][j];
-        if (xMN[i][columns] == 0 & xMN[rows][j] != 0) {
+        xMN[i][j] = Math.min(xMN[i][xMN.length-1], xMN[xMN.length-1][j]);
+        xMN[i][xMN.length-1] -= xMN[i][j];
+        xMN[xMN.length-1][j] -= xMN[i][j];
+        if (xMN[i][xMN.length-1] == 0 & xMN[xMN.length-1][j] != 0) {
             poiskbazper(i + 1, j);
         }
-        if (xMN[i][columns] != 0 & xMN[rows][j] == 0) {
+        if (xMN[i][xMN.length-1] != 0 & xMN[xMN.length-1][j] == 0) {
             poiskbazper(i, j + 1);
         }
         pyti = new int[rows + 1][columns + 1];
@@ -220,6 +194,20 @@ public class Fogel {
             for (j = 0; j < columns + 1; j++) {
                 pyti[i][j] = xMN[i][j];
             }
+        }
+    }
+    
+    public void dskjf(){
+        System.out.println("Опорный план:");
+        if(max3 == max1){
+            poiskbazper(I1, J);
+        }
+        else poiskbazper(I, J1);
+        for(int i = 0; i < xMN.length; i++){
+            for(int j = 0; j < xMN[i].length; j++){
+                System.out.print(xMN[i][j] + "\t");
+            }
+            System.out.println();
         }
     }
 }
