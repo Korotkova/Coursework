@@ -3,7 +3,6 @@ package application;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.io.IOException;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -204,7 +203,6 @@ public class EnterValuesWindow {
         );
 
         jf.pack();
-        
         jf.setVisible(true);
         
         button.addActionListener((ActionEvent e) -> {
@@ -231,10 +229,12 @@ public class EnterValuesWindow {
             }*/
         });
     }
+    
     public void conditionSelection(){
         if(cb1.getSelectedItem() == cb1.getItemAt(0)){
             if(checkBox.getModel().isSelected()){
-                new SolutionTheNorthwestCorner().setVisible(true);
+                new SolutionTheNorthwestCorner();
+                
             }
             else new OnlyAnswer();
         }

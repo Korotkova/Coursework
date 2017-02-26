@@ -17,6 +17,7 @@ public class Application {
     
     private final SpinnerNumberModel numberModel1;
     private final SpinnerNumberModel numberModel2;
+    public Integer m1, m2;
 
     public Application() {
         
@@ -112,10 +113,12 @@ public class Application {
         f.pack();
         
         f.setVisible(true);
-
+        
         next.addActionListener((ActionEvent e) -> {
             f.setVisible(false);
-            new EnterValuesWindow((Integer) numberModel1.getValue(), (Integer) numberModel2.getValue());
+            m1 = (Integer) numberModel1.getValue();
+            m2 = (Integer) numberModel2.getValue();
+            new EnterValuesWindow(m1, m2);
         });
     }
     

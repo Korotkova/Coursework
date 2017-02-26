@@ -468,9 +468,7 @@ public final class NorthwestCorner {
         }
     }
     
-    public NorthwestCorner(Integer spros, Integer predloj){
-        
-        rows = spros; columns = predloj;
+    public NorthwestCorner(){
         
         while(potenshialNotBaz()){
             forWay();
