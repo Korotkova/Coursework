@@ -149,7 +149,7 @@ public class Fogel {
             for(int j = 0; j < moneyMN.length; j++){
                 if(moneyMN[i][j] > max1){
                     max1 = moneyMN[i][j];
-                    J = j + 1;
+                    J = j;
                 }
             }
         }
@@ -160,7 +160,7 @@ public class Fogel {
             for (int i = 0; i < moneyMN.length; i++) {
                 if (moneyMN[i][j] > max2) {
                     max2 = moneyMN[i][j];
-                    I = i + 1;
+                    I = i;
                 }
             }
         }
@@ -172,16 +172,16 @@ public class Fogel {
     
     public void minRowsColumns() {//поиск минимального в столбце/строке наибольшего из разностей
         //фиксирую строчку и бегаю по ней
-        int t = J - 1;
+        int t = J;
         if(max3 == max1){
             mI = moneyMN[0][t];
             for(int j = t; j < columns; j++){
                 for (int i = 1; i < rows; i++) {
                     if (moneyMN[i][t] < mI) {
                         mI = moneyMN[i][t];
-                        I1 = i + 1;
+                        I1 = i;
                     }
-                    else if(mI == moneyMN[0][t]) I1 = 1;
+                    else if(mI == moneyMN[0][t]) I1 = 0;
                 }
             }
             System.out.println("В столбце " + J + " минимальный элемент = " + mI + "\t" + I1);
@@ -195,9 +195,9 @@ public class Fogel {
                 for(int j = 1; j < columns; j++){
                     if(moneyMN[t1][j] < mJ){
                         mJ = moneyMN[t1][j];
-                        J1 = j + 1;
+                        J1 = j;
                     }
-                    else if(mJ == moneyMN[t1][0]) J1 = 1;
+                    else if(mJ == moneyMN[t1][0]) J1 = 0;
                 }
             }
             System.out.println("В строке " + I + " минимальный элемент = " + mJ + "\t" + J1);
@@ -220,9 +220,9 @@ public class Fogel {
     public void basicPlan(){
         System.out.println("Опорный план:");
         if(max3 == max1){
-            poiskbazper(I1-1, J-1);
+            poiskbazper(I1, J);
         }
-        else poiskbazper(I-1, J1-1);
+        else poiskbazper(I, J1);
         
         for (int[] xMN1 : xMN) {//распечатка опорного плана
             for (int j = 0; j < xMN1.length; j++) {
@@ -230,42 +230,48 @@ public class Fogel {
             }
             System.out.println();
         }
-        basic = new int[rows + 1][columns + 1];
         for (int i = 0; i < rows + 1; i++) {
             for (int j = 0; j < columns + 1; j++) {
-                basic[i][j] += xMN[i][j];
+                basic[i][j] = xMN[i][j];
             }
         }
     }
     
     public void invisibleRowOrColumn(){//невидимые столбец и строка
-        for (int[] xMN1 : xMN) {
-            for (int j = 0; j < xMN1.length; j++) {
+        for (int i = 0; i < xMN.length; i++) {
+            for (int j = 0; j < xMN[i].length; j++) {
                 if (xMN[xMN.length - 1][j] == 0) {
                     cleanSTOLxMN();
-                } else if (xMN1[xMN.length - 1] == 0) {
+                } else if (xMN[i][xMN.length - 1] == 0) {
                     cleanSTRxMN();
                 }
             }
         }
-        for (int[] moneyMN1 : moneyMN) {
-            for (int j = 0; j < moneyMN1.length; j++) {
-                if (moneyMN[moneyMN.length - 2][j] == 0) {
-                    cleanSTOLmoney();
-                } else if (moneyMN1[moneyMN.length - 2] == 0) {
-                    cleanSTRmoney();
-                }
+        System.out.println();
+        /*System.out.println("лорпащгн");
+        for (int[] xMN1 : xMN) {
+            for (int j = 0; j < xMN1.length; j++) {
+                System.out.print(xMN1[j] + "\t");
             }
-        }
-        
-        System.out.println("МАССИВ:");
-        for (int[] moneyMN1 : moneyMN) {
-            for (int j = 0; j < moneyMN1.length; j++) {
-                System.out.print(moneyMN1[j] + "\t");
+            System.out.println();
+        }*/
+        System.out.println("База:");
+        for (int[] basic1 : basic) {
+            for (int j = 0; j < basic1.length; j++) {
+                System.out.print(basic1[j] + "\t");
             }
             System.out.println();
         }
         System.out.println();
+        for(int i = 0; i < moneyMN.length-1; i++){
+            for(int j = 0; j < moneyMN[i].length-1; j++){
+                if(xMN[xMN.length - 1][j] == 0) {
+                    cleanSTOLmoney(J);
+                } else if(xMN[i][xMN.length - 1] == 0){
+                    cleanSTRmoney(I);
+                }
+            }
+        }
     }
     
     public void cleanSTRxMN() {
@@ -288,30 +294,27 @@ public class Fogel {
         }
     }
     
-    public void cleanSTRmoney(){
-        for(int i = 0; i < moneyMN.length - 2; i++){
-            for (int j = 0; j < moneyMN[i].length - 2; j++){
-                if(moneyMN[i][moneyMN.length - 2] == 0) {
-                    moneyMN[i][j] = 0;
-                }
+    public void cleanSTRmoney(int i){
+        for(int j = 0; j < xMN[i].length; j++){
+            if(xMN[i][xMN.length - 1] == 0){
+                moneyMN[i][j] = 0;
             }
         }
     }
     
-    public void cleanSTOLmoney() {
-        for(int i = 0; i < moneyMN.length - 2; i++){
-            for (int j = 0; j < moneyMN[i].length - 2; j++){
-                if(moneyMN[moneyMN.length - 2 ][j] == 0) {
-                    moneyMN[i][j] = 0;
-                }
+    public void cleanSTOLmoney(int j) {
+        for(int i = 0; i < xMN.length; i++){
+            if(xMN[xMN.length - 1][j] == 0) {
+                moneyMN[i][j] = 0;
             }
         }
     }
     
     public void cycle(){
-        for (int[] xMN1 : xMN) {
-            for (int j = 0; j < xMN1.length; j++) {
-                if (xMN[xMN.length - 1][j] != 0 && xMN1[xMN.length - 1] != 0) {
+        System.out.println("МАССИВ:");
+        for(int i = 0; i < moneyMN.length; i++){
+            for(int j = 0; j < moneyMN[i].length; j++){
+                if(xMN[xMN.length - 1][j] != 0 && xMN[i][xMN.length - 1] != 0){
                     difcolumn();
                     difrow();
                     for (int[] moneyMN1 : moneyMN){
@@ -324,6 +327,8 @@ public class Fogel {
                     minRowsColumns();
                     basicPlan();
                     invisibleRowOrColumn();
+                    cleanSTOLmoney(J1);
+                    cleanSTRmoney(I1);
                 }
             }
         }
