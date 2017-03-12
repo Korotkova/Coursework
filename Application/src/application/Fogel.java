@@ -100,22 +100,26 @@ public class Fogel {
         for(int i = 0; i < rows; i++) {
             min1 = moneyMN[i][0];
             min2 = moneyMN[i][1];
-            for(int j = 2; j < columns; j++){
-                if(moneyMN[i][j] < min2) {
-                    if(moneyMN[i][j] < min1) {
-                            if(min1 < min2)
-                                min2 = moneyMN[i][j];
-                            else min1 = moneyMN[i][j];
+            if(min1 != 0 || min2 != 0){
+                for(int j = 2; j < columns; j++){
+                    if(moneyMN[i][j] != 0){
+                        if(moneyMN[i][j] < min2) {
+                            if(moneyMN[i][j] < min1) {
+                                if(min1 < min2)
+                                    min2 = moneyMN[i][j];
+                                else min1 = moneyMN[i][j];
+                            }
+                            else min2 = moneyMN[i][j];
+                        }
+                        else if(moneyMN[i][j] < min1)   min1 = moneyMN[i][j];
                     }
-                    else min2 = moneyMN[i][j];
                 }
-                else if(moneyMN[i][j] < min1)   min1 = moneyMN[i][j];
-                }
-            min12 = Math.abs(min1 - min2);
-            difcol[i] += min12;
-        }
-        for(int j = 0; j < columns; j++){
-            moneyMN[j][moneyMN.length - 1] = difcol[j];
+                min12 = Math.abs(min1 - min2);
+                difcol[i] += min12;
+            }
+            for(int j = 0; j < columns; j++){
+                moneyMN[j][moneyMN.length - 1] = difcol[j];
+            }
         }
     }
     
@@ -124,17 +128,21 @@ public class Fogel {
         for(int i = 0; i < columns; i++) {
             min1 = moneyMN[0][i];
             min2 = moneyMN[1][i];
-            for(int j = 2; j < rows; j++){
-                if(moneyMN[j][i] < min2) {
-                    if(moneyMN[j][i] < min1) {
-                            if(min1 < min2)
-                                min2 = moneyMN[j][i];
-                            else min1 = moneyMN[j][i];
+            if(min1 != 0 || min2 != 0){
+                for(int j = 2; j < rows; j++){
+                    if(moneyMN[i][j] != 0){
+                        if(moneyMN[j][i] < min2) {
+                            if(moneyMN[j][i] < min1) {
+                                if(min1 < min2)
+                                    min2 = moneyMN[j][i];
+                                else min1 = moneyMN[j][i];
+                            }
+                            else min2 = moneyMN[j][i];
+                        }
+                        else if(moneyMN[j][i] < min1)   min1 = moneyMN[j][i];
                     }
-                    else min2 = moneyMN[j][i];
                 }
-                else if(moneyMN[j][i] < min1)   min1 = moneyMN[j][i];
-                }
+            }
             min12 = Math.abs(min1 - min2);
             difrow[i] += min12;
         }
@@ -230,9 +238,9 @@ public class Fogel {
             }
             System.out.println();
         }
-        for (int i = 0; i < rows + 1; i++) {
+        for (int i = 0; i < rows + 1; i++) {//распечатка базы
             for (int j = 0; j < columns + 1; j++) {
-                basic[i][j] = xMN[i][j];
+                basic[i][j] += xMN[i][j];
             }
         }
     }
