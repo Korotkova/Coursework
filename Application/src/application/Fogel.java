@@ -28,6 +28,7 @@ public class Fogel {
     int mI, mJ;//минимальный в фиксированной строке/столбце
     int I = 0, J = 0;//фиксирование строки/столбца, в которых находится max
     int I1 = 0, J1 = 0;//второе фиксирование строки/столбца
+    int invI, invJ;//невидимые строка/столбец
     
     public void setSprosPredlozhenie() {
         Scanner kons = new Scanner(System.in);
@@ -42,6 +43,7 @@ public class Fogel {
         for (int i = 0; i < rows; i++) {
             masU[i] = 999999;
         }
+        basic = new int[rows + 1][columns + 1];
         masV = new int[columns];
         for (int i = 0; i < columns; i++) {
             masV[i] = 999999;
@@ -84,39 +86,39 @@ public class Fogel {
 
         if (balan1 == balan2) {
             System.out.println("Задача сбалансирована " + balan1 + " = " + balan2);
-            for (int i = 0; i < rows + 1; i++) {
-                for (int j = 0; j < columns + 1; j++) {
-                    System.out.print(moneyMN[i][j] + "\t");
-                }
-                System.out.println();
-            }
         }
-        System.out.println("Метод Фогеля");
-        cycle();
     }
     
     public void difcolumn(){//поиск разности 2-х минимальных в строках
         difcol = new int[rows];
-        for(int i = 0; i < rows; i++) {
+        for(int i = 0; i < moneyMN.length - 2; i++) {
             min1 = moneyMN[i][0];
             min2 = moneyMN[i][1];
-            if(min1 != 0 || min2 != 0){
-                for(int j = 2; j < columns; j++){
-                    if(moneyMN[i][j] != 0){
-                        if(moneyMN[i][j] < min2) {
-                            if(moneyMN[i][j] < min1) {
-                                if(min1 < min2)
-                                    min2 = moneyMN[i][j];
-                                else min1 = moneyMN[i][j];
-                            }
-                            else min2 = moneyMN[i][j];
-                        }
-                        else if(moneyMN[i][j] < min1)   min1 = moneyMN[i][j];
-                    }
-                }
-                min12 = Math.abs(min1 - min2);
-                difcol[i] += min12;
+            if((min1 == 0) & (min2 != 0)){
+                min1 = moneyMN[i][2];
             }
+            else if((min2 == 0) & (min1 != 0)){
+                min2 = moneyMN[i][2];
+            }
+            for(int j = 2; j < moneyMN[i].length - 2; j++){
+                if(moneyMN[i][j] == 0){//если на складе 0
+                    j++;
+                    continue;
+                }
+                if(moneyMN[i][j] != 0){
+                    if(moneyMN[i][j] < min2) {
+                        if(moneyMN[i][j] < min1) {
+                            if(min1 < min2)
+                                min2 = moneyMN[i][j];
+                            else min1 = moneyMN[i][j];
+                        }
+                        else min2 = moneyMN[i][j];
+                    }
+                    else if(moneyMN[i][j] < min1)   min1 = moneyMN[i][j];
+                }
+            }
+            min12 = Math.abs(min1 - min2);
+            difcol[i] += min12;
             for(int j = 0; j < columns; j++){
                 moneyMN[j][moneyMN.length - 1] = difcol[j];
             }
@@ -125,22 +127,30 @@ public class Fogel {
     
     public void difrow(){//поиск разности 2-х минимальных в столбцах
         difrow = new int[columns];
-        for(int i = 0; i < columns; i++) {
+        for(int i = 0; i < moneyMN.length - 2; i++) {
             min1 = moneyMN[0][i];
             min2 = moneyMN[1][i];
-            if(min1 != 0 || min2 != 0){
-                for(int j = 2; j < rows; j++){
-                    if(moneyMN[i][j] != 0){
-                        if(moneyMN[j][i] < min2) {
-                            if(moneyMN[j][i] < min1) {
-                                if(min1 < min2)
-                                    min2 = moneyMN[j][i];
-                                else min1 = moneyMN[j][i];
-                            }
-                            else min2 = moneyMN[j][i];
+            if((min1 == 0) & (min2 != 0)){
+                min1 = moneyMN[2][i];
+            }
+            else if((min2 == 0) & (min1 != 0)){
+                min2 = moneyMN[2][i];
+            }
+            for(int j = 2; j < moneyMN[i].length - 2; j++){
+                if(moneyMN[j][i] == 0){//если на складе 0
+                    j++;
+                    continue;
+                }
+                if(moneyMN[j][i] != 0){
+                    if(moneyMN[j][i] < min2) {
+                        if(moneyMN[j][i] < min1) {
+                            if(min1 < min2)
+                                min2 = moneyMN[j][i];
+                            else min1 = moneyMN[j][i];
                         }
-                        else if(moneyMN[j][i] < min1)   min1 = moneyMN[j][i];
+                        else min2 = moneyMN[j][i];
                     }
+                    else if(moneyMN[j][i] < min1)   min1 = moneyMN[j][i];
                 }
             }
             min12 = Math.abs(min1 - min2);
@@ -180,12 +190,16 @@ public class Fogel {
     
     public void minRowsColumns() {//поиск минимального в столбце/строке наибольшего из разностей
         //фиксирую строчку и бегаю по ней
-        int t = J;
+        int t = J, h = 0;
         if(max3 == max1){
             mI = moneyMN[0][t];
-            for(int j = t; j < columns; j++){
-                for (int i = 1; i < rows; i++) {
-                    if (moneyMN[i][t] < mI) {
+            for(int j = t; j < moneyMN.length - 2; j++){
+                for (int i = 0; i < moneyMN.length - 2; i++) {
+                    if(moneyMN[i][t] == 0){
+                        i++;
+                        continue;
+                    }
+                    if (moneyMN[i][t] < mI && moneyMN[i][t]!= 0) {
                         mI = moneyMN[i][t];
                         I1 = i;
                     }
@@ -197,11 +211,15 @@ public class Fogel {
         
         //фиксирую столбец и бегаю по столбцу
         else if(max3 == max2){
-            int t1 = I - 1;
+            int t1 = I;
             mJ = moneyMN[t1][0];
-            for(int i = t1; i < rows; i++){
-                for(int j = 1; j < columns; j++){
-                    if(moneyMN[t1][j] < mJ){
+            for(int i = t1; i < moneyMN.length - 2; i++){
+                for(int j = 0; j < moneyMN[i].length - 2; j++){
+                    if(moneyMN[t1][j] == 0){
+                        j++;
+                        continue;
+                    }
+                    if(moneyMN[t1][j] < mJ && moneyMN[t1][j] != 0){
                         mJ = moneyMN[t1][j];
                         J1 = j;
                     }
@@ -238,8 +256,8 @@ public class Fogel {
             }
             System.out.println();
         }
-        for (int i = 0; i < rows + 1; i++) {//распечатка базы
-            for (int j = 0; j < columns + 1; j++) {
+        for (int i = 0; i < rows; i++) {//распечатка базы
+            for (int j = 0; j < columns; j++) {
                 basic[i][j] += xMN[i][j];
             }
         }
@@ -256,13 +274,6 @@ public class Fogel {
             }
         }
         System.out.println();
-        /*System.out.println("лорпащгн");
-        for (int[] xMN1 : xMN) {
-            for (int j = 0; j < xMN1.length; j++) {
-                System.out.print(xMN1[j] + "\t");
-            }
-            System.out.println();
-        }*/
         System.out.println("База:");
         for (int[] basic1 : basic) {
             for (int j = 0; j < basic1.length; j++) {
@@ -320,9 +331,9 @@ public class Fogel {
     
     public void cycle(){
         System.out.println("МАССИВ:");
-        for(int i = 0; i < moneyMN.length; i++){
+        for(int i = 0; i < moneyMN.length - 1; i++){
+            if(xMN[i][xMN.length - 1] != 0 || xMN[xMN.length - 1][i] != 0){
             for(int j = 0; j < moneyMN[i].length; j++){
-                if(xMN[xMN.length - 1][j] != 0 && xMN[i][xMN.length - 1] != 0){
                     difcolumn();
                     difrow();
                     for (int[] moneyMN1 : moneyMN){
