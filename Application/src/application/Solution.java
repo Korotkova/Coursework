@@ -1,13 +1,30 @@
 package application;
 
-public class SolutionTheNorthwestCorner extends javax.swing.JFrame {
-
-    public SolutionTheNorthwestCorner() {
-        setTitle("Метод Северо-Западного угла");
-        setBounds(330, 100, 500, 300);
+public class Solution extends javax.swing.JFrame {
+    
+    Integer row, column;
+    Integer balan1, balan2;
+    Integer[][] money;
+    Integer[][] xMN; 
+    
+    public Solution(Integer row, Integer column, int balan1, int balan2, Integer[][] money) {
+        this.row = row;
+        this.column = column;
+        this.balan1 = balan1;
+        this.balan2 = balan2;
+        this.money = money;
+        setLocation(330, 100);
         setResizable(false);
         initComponents();
         setVisible(true);
+        NorthwestCorner nc = new NorthwestCorner(row, column, money);
+        nc.setxMN(xMN);
+        for(int i = 0; i < row; i++){
+            for(int j = 0; j < column; j++){
+                System.out.print(xMN[i][j] + "\t");
+            }
+            System.out.println();
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -23,28 +40,17 @@ public class SolutionTheNorthwestCorner extends javax.swing.JFrame {
         label4 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         table2 = new javax.swing.JTable();
-        label5 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(700, 550));
 
         panel.setBackground(new java.awt.Color(255, 255, 255));
         panel.setPreferredSize(new java.awt.Dimension(700, 550));
 
         table1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         table1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
-            },
+            money,
             new String [] {
                 "A", "B", "C", "D", "E", "F", "G"
             }
@@ -70,15 +76,6 @@ public class SolutionTheNorthwestCorner extends javax.swing.JFrame {
         table1.getTableHeader().setResizingAllowed(false);
         table1.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(table1);
-        if (table1.getColumnModel().getColumnCount() > 0) {
-            table1.getColumnModel().getColumn(0).setResizable(false);
-            table1.getColumnModel().getColumn(1).setResizable(false);
-            table1.getColumnModel().getColumn(2).setResizable(false);
-            table1.getColumnModel().getColumn(3).setResizable(false);
-            table1.getColumnModel().getColumn(4).setResizable(false);
-            table1.getColumnModel().getColumn(5).setResizable(false);
-            table1.getColumnModel().getColumn(6).setResizable(false);
-        }
 
         label1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         label1.setText("Спрос");
@@ -96,15 +93,7 @@ public class SolutionTheNorthwestCorner extends javax.swing.JFrame {
 
         table2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         table2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
-            },
+            xMN,
             new String [] {
                 "A", "B", "C", "D", "E", "F", "G"
             }
@@ -130,18 +119,6 @@ public class SolutionTheNorthwestCorner extends javax.swing.JFrame {
         table2.getTableHeader().setResizingAllowed(false);
         table2.getTableHeader().setReorderingAllowed(false);
         jScrollPane3.setViewportView(table2);
-        if (table2.getColumnModel().getColumnCount() > 0) {
-            table2.getColumnModel().getColumn(0).setResizable(false);
-            table2.getColumnModel().getColumn(1).setResizable(false);
-            table2.getColumnModel().getColumn(2).setResizable(false);
-            table2.getColumnModel().getColumn(3).setResizable(false);
-            table2.getColumnModel().getColumn(4).setResizable(false);
-            table2.getColumnModel().getColumn(5).setResizable(false);
-            table2.getColumnModel().getColumn(6).setResizable(false);
-        }
-
-        label5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        label5.setText("ЦФ:");
 
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton1.setText("Следующий шаг");
@@ -153,8 +130,7 @@ public class SolutionTheNorthwestCorner extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
         panel.setLayout(panelLayout);
@@ -180,22 +156,17 @@ public class SolutionTheNorthwestCorner extends javax.swing.JFrame {
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelLayout.createSequentialGroup()
                         .addGap(53, 53, 53)
-                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(panelLayout.createSequentialGroup()
-                                .addComponent(label5)
-                                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(panelLayout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(panelLayout.createSequentialGroup()
-                                        .addGap(16, 16, 16)
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addContainerGap())
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(32, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
-                        .addComponent(label3)
-                        .addGap(32, 32, 32))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
+                                .addComponent(label3)
+                                .addGap(32, 32, 32))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(45, 45, 45))))))
         );
         panelLayout.setVerticalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -208,28 +179,20 @@ public class SolutionTheNorthwestCorner extends javax.swing.JFrame {
                         .addGap(4, 4, 4)
                         .addComponent(label2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(panelLayout.createSequentialGroup()
-                                .addComponent(label3)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(8, 8, 8)
-                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelLayout.createSequentialGroup()
-                        .addGap(3, 3, 3)
-                        .addComponent(label4)
-                        .addGap(9, 9, 9)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(47, Short.MAX_VALUE))
-                    .addGroup(panelLayout.createSequentialGroup()
-                        .addGap(91, 91, 91)
-                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(label5)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31))))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(11, 11, 11)
+                .addComponent(label4)
+                .addGap(9, 9, 9)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(47, Short.MAX_VALUE))
+            .addGroup(panelLayout.createSequentialGroup()
+                .addGap(223, 223, 223)
+                .addComponent(label3)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31))
         );
 
         label1.getAccessibleContext().setAccessibleName("");
@@ -250,20 +213,33 @@ public class SolutionTheNorthwestCorner extends javax.swing.JFrame {
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         setVisible(false);
-        new PotentialsMethod().setVisible(true);
+        EnterValuesWindow window = new EnterValuesWindow(row, column);
+        if(window.jComboBox1.getSelectedItem() == window.jComboBox1.getItemAt(0)){
+           // NC();
+        }
+        new PotentialsMethodForMIN().setVisible(true);
     }//GEN-LAST:event_jButton1MouseClicked
 
+    /*public void NC(){
+        NorthwestCorner nc = new NorthwestCorner(money);
+        nc.setxMN(xMN);
+        for(int i = 0; i < row; i++){
+            for(int j = 0; j < column; j++){
+                System.out.print(xMN[i][j] + "\t");
+            }
+            System.out.println();
+        }
+    }*/
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel label1;
     private javax.swing.JLabel label2;
     private javax.swing.JLabel label3;
     private javax.swing.JLabel label4;
-    private javax.swing.JLabel label5;
     private javax.swing.JPanel panel;
     private javax.swing.JTable table1;
     private javax.swing.JTable table2;

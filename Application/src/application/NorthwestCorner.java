@@ -4,15 +4,17 @@ import javax.swing.JTable;
 
 public final class NorthwestCorner {
     
-    Integer rows, columns;
-    EnterValuesWindow ew = new EnterValuesWindow(rows, columns);    
-    int[][] xMN;//опорный план
+    Integer rows, columns;  
+    Integer[] masPredloj;
+    Integer[] masSpros;
+    Integer[][] money;
+    Integer[][] xMN ;//опорный план
     boolean flagfirstX = false; // как только найдем первую базисную делаем true
     int kI = 0;//строка вводимой переменной в базис
     int kJ = 0;//столбец вводимой переменной в базис
     int vonI = 0;//строка выводимой переменной из базиса
     int vonJ = 0;//столбец выводимой переменной из базиса
-    int[][] pyti;//для замкнутого цикла
+    Integer[][] pyti;//для замкнутого цикла
     String pytuperem;
     String children;//для запоминания ячеек
     int kolTochek = 0;
@@ -21,43 +23,19 @@ public final class NorthwestCorner {
     int balan1 = 0, balan2 = 0;
     
     public void setMoneyNM() {//расчет баланса и опорного плана
-        
-        xMN = new int[rows + 1][columns + 1];
+        xMN = new Integer[rows + 1][columns + 1];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 xMN[i][j] = 0;
             }
         }
-
+        masSpros = new Integer[rows];
         for (int i = 0; i < rows; i++) {
-            ew.money[i][columns] = ew.masU[i];
-            xMN[i][columns] = ew.money[i][columns];
-            balan1 += ew.masU[i];
+            masSpros[i] = 999999;
         }
-
-        for (int j = 0; j < columns; j++) {
-            ew.money[rows][j] = ew.masV[j];
-            xMN[rows][j] = ew.money[rows][j];
-            balan2 += ew.masV[j];
-        }
-
-        if (balan1 == balan2) {
-            System.out.println("Задача сбалансирована " + balan1 + " = " + balan2);
-            for (int i = 0; i < rows + 1; i++) {
-                for (int j = 0; j < columns + 1; j++) {
-                    System.out.print(ew.money[i][j] + "\t"); //поместить в JTabble1
-                }
-                System.out.println();
-            }
-        }
-    }
-
-    public void getxMN() {//печать опрного плана
-        for (int i = 0; i < rows + 1; i++) {
-            for (int j = 0; j < columns + 1; j++) {
-                System.out.print(xMN[i][j] + "\t");//поместить в JTable2
-            }
-            System.out.println();
+        masPredloj = new Integer[columns];
+        for (int i = 0; i < columns; i++) {
+            masPredloj[i] = 999999;
         }
     }
 
@@ -71,7 +49,7 @@ public final class NorthwestCorner {
         if (xMN[i][columns] != 0 & xMN[rows][j] == 0) {
             poiskbazper(i, j + 1);
         }
-        pyti = new int[rows + 1][columns + 1];
+        pyti = new Integer[rows + 1][columns + 1];
         for (i = 0; i < rows + 1; i++) {
             for (j = 0; j < columns + 1; j++) {
                 pyti[i][j] = xMN[i][j];
@@ -82,12 +60,12 @@ public final class NorthwestCorner {
     public boolean vse(){ //проеряет, все ли мы нашли потенциалы, вернет тру если все, иначе волсе
         boolean ot = true;
         for (int i = 0; i < rows; i++) {
-           if(ew.masU[i] == 999999) {
+           if(masPredloj[i] == 999999) {
            ot = false;
                break;}
         }
         for (int i = 0; i < columns; i++) {
-            if(ew.masV[i] == 999999) {
+            if(masSpros[i] == 999999) {
            ot = false;
                break;}
         }
@@ -100,19 +78,19 @@ public final class NorthwestCorner {
         {for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                if (xMN[i][j] != 0 & !flagfirstX) {
-                    ew.masU[i] = 0;
+                    masPredloj[i] = 0;
                     k = i;
                     flagfirstX = true;
                 }
                 if (xMN[i][j] != 0 & flagfirstX) {
-                    if (i == k & ew.masU[k] == 0) {
-                        ew.masV[j] = ew.money[i][j];
+                    if (i == k & masPredloj[k] == 0) {
+                        masSpros[j] = money[i][j];
                     }
-                    if (ew.masU[i] == 999999 & k != i & ew.masV[j] != 999999) {
-                        ew.masU[i] = ew.money[i][j] - ew.masV[j];
+                    if (masPredloj[i] == 999999 & k != i & masSpros[j] != 999999) {
+                        masPredloj[i] = money[i][j] - masSpros[j];
                     }
-                    if (ew.masV[j] == 999999 & k != i & ew.masU[i] != 999999) {
-                        ew.masV[j] = ew.money[i][j] - ew.masU[i];
+                    if (masSpros[j] == 999999 & k != i & masPredloj[i] != 999999) {
+                        masSpros[j] = money[i][j] - masPredloj[i];
                     }
                 }
             }
@@ -122,19 +100,19 @@ public final class NorthwestCorner {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 if (xMN[i][j] != 0  & xMN[i][j] != 8888888){
-                    Z1 += xMN[i][j] * ew.money[i][j];
+                    Z1 += xMN[i][j] * money[i][j];
                 }
             }
         }
-       System.out.println("Оптимальное решение Z = " + Z1 + " ус. ед.");
+       //System.out.println("Оптимальное решение Z = " + Z1 + " ус. ед.");
        Z = Z1;
         flagfirstX = false;
-        for (int i = 0; i < rows; i++) {
-            System.out.println("U[" + (i + 1) + "] = " + ew.masU[i]);
+        /*for (int i = 0; i < rows; i++) {
+            System.out.println("U[" + (i + 1) + "] = " + masPredloj[i]);
         }
         for (int j = 0; j < columns; j++) {
-            System.out.println("V[" + (j + 1) + "] = " + ew.masV[j]);
-        }
+            System.out.println("V[" + (j + 1) + "] = " + masSpros[j]);
+        }*/
     }
 
     public boolean potenshialNotBaz() {     //если нет больше положительных вернет false
@@ -142,10 +120,9 @@ public final class NorthwestCorner {
         int per = 0;
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-
                 if (xMN[i][j] == 0) {
-                    per = ew.masU[i] + ew.masV[j] - ew.money[i][j];
-                    System.out.println("Для x[" + (i + 1) + "][" + (j + 1) + "]: " + ew.masU[i] + "+" + ew.masV[j] + "-" + ew.money[i][j] + " = " + per);
+                    per = masPredloj[i] + masSpros[j] - money[i][j];
+                    //System.out.println("Для x[" + (i + 1) + "][" + (j + 1) + "]: " + masPredloj[i] + "+" + masSpros[j] + "-" + money[i][j] + " = " + per);
                     if (per > 0 & per > perN) {
                         perN = per;
                         kI = i;
@@ -155,16 +132,16 @@ public final class NorthwestCorner {
             }
         }
         for (int i = 0; i < rows; i++) {
-            ew.masU[i] = 999999;
+            masPredloj[i] = 999999;
         }
         for (int i = 0; i < columns; i++) {
-            ew.masV[i] = 999999;
+            masSpros[i] = 999999;
         }
           //заполним вводимую в базис переенную значением
         //любое значение, лишь бы не ноль!
         pyti[kI][kJ] = 99999;
         if (perN > 0) {
-            System.out.println("Вводимая в БП x[" + (kI + 1) + "][" + (kJ + 1) + "]");
+            //System.out.println("Вводимая в БП x[" + (kI + 1) + "][" + (kJ + 1) + "]");
             return true;
         } 
         else {
@@ -259,8 +236,8 @@ public final class NorthwestCorner {
         while (!proverkaround()) {
             cleanTable();
         }
-        System.out.println("Для пути:");//поместить в JTabble3
-        for (int i = 0; i < rows; i++) {
+        //System.out.println("Для пути:");//поместить в JTabble3
+        /*for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 if(pyti[i][j] == 99999){
                     System.out.print("*" + "\t");}
@@ -272,7 +249,7 @@ public final class NorthwestCorner {
                     }
             }
             System.out.println();
-        }
+        }*/
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 if (pyti[i][j] != 0) {
@@ -413,7 +390,7 @@ public final class NorthwestCorner {
             }
         }
         pyti[kI][kJ] = 0;
-        int xyT[] = new int[kolTochek * 2];
+        Integer xyT[] = new Integer[kolTochek * 2];
         String sp[] = children.split("\\.");
         for (int i = 0; i < xyT.length; i++) {
             xyT[i] = Integer.parseInt(sp[i]);
@@ -428,7 +405,7 @@ public final class NorthwestCorner {
                 i += 4;
             }
         }
-        System.out.println("Минимальное значение БП со знаком \"-\": " + minOTRIc);
+        //System.out.println("Минимальное значение БП со знаком \"-\": " + minOTRIc);
         //отнимаю минимальное у "-"
         for (int i = 0; i < xyT.length;) {
             xMN[xyT[i]][xyT[i + 1]] -= minOTRIc;
@@ -458,7 +435,7 @@ public final class NorthwestCorner {
                 xMN[xyT[i]][xyT[i + 1]] = 8888888;
             }
         }
-        System.out.println("Выводимая из БП х[" + (vonI + 1) + "][" + (vonJ + 1) + "]");
+        //System.out.println("Выводимая из БП х[" + (vonI + 1) + "][" + (vonJ + 1) + "]");
         kolTochek = 0;
        //После вывода
         for (int i = 0; i < rows; i++) {
@@ -467,16 +444,32 @@ public final class NorthwestCorner {
             }
         }
     }
+
+    public Integer[][] getxMN() {
+        return xMN;
+    }
+
+    public void setxMN(Integer[][] xMN) {
+        this.xMN = xMN;
+    }
     
-    public NorthwestCorner(){
-        
+    
+    
+    public NorthwestCorner(Integer row, Integer column, Integer[][] money){
+        this.money = money;
+        this.rows = row;
+        this.columns = column;
+        setMoneyNM();
+        poiskbazper(0, 0);
+        potenshialBaz();
         while(potenshialNotBaz()){
             forWay();
             WayZamknut();
             begay();
             potenshialBaz();
         }
-        System.out.println("Отрицательных потенциалов нет\nНевозможно уменьшить стоимость доставки продукции");
+        
+        /*System.out.println("Отрицательных потенциалов нет\nНевозможно уменьшить стоимость доставки продукции");
         System.out.println("Ответ:");
         for (int i = 0; i < columns; i++) {
             for (int j = 0; j < rows; j++) {
@@ -484,6 +477,6 @@ public final class NorthwestCorner {
             }
             System.out.println();
         }
-        System.out.println("Z = " + Z + " ус. ед.");
+        System.out.println("Z = " + Z + " ус. ед.");*/
     }
 }

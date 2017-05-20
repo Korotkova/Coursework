@@ -4,15 +4,11 @@ import javax.swing.table.DefaultTableModel;
 
 public class EnterValuesWindow extends javax.swing.JFrame {
     
-    private Integer row, column;
-    private DefaultTableModel model1, model2, model3;
-
     public EnterValuesWindow(Integer row, Integer column) {
         this.row = row;
         this.column = column;
         setTitle("Транспортная задача");
-        setBounds(300, 200, 700, 300);
-        setVisible(true);
+        setLocation(380, 200);
         initComponents();
     }
 
@@ -58,7 +54,6 @@ public class EnterValuesWindow extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(700, 300));
-        jPanel1.setRequestFocusEnabled(false);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setText("Введите значения спроса и предложений");
@@ -98,7 +93,7 @@ public class EnterValuesWindow extends javax.swing.JFrame {
 
         jTable1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jTable1.setModel(model1 = new javax.swing.table.DefaultTableModel(
-            new Object [column], 1) {
+            new Integer [column], 1) {
             Class[] types = new Class [] {
                 java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
             };
@@ -180,8 +175,8 @@ public class EnterValuesWindow extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jComboBox1, 0, 152, Short.MAX_VALUE)))))
+                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jButton1)
@@ -233,7 +228,7 @@ public class EnterValuesWindow extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 704, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
@@ -245,62 +240,68 @@ public class EnterValuesWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-        masU = new int[row];
+        setVisible(false);
+        masPredloj = new int[row];
         for(int i = 0; i < jTable2.getColumnCount(); i++){
-            masU[i] = (int) model2.getValueAt(0, i);
+            masPredloj[i] = (int) model2.getValueAt(0, i);
         }
-        masV = new int[column];
+        masSpros = new int[column];
         for(int i = 0; i < jTable1.getColumnCount(); i++){
-            masV[i] = (int) model1.getValueAt(0, i);
+            masSpros[i] = (int) model1.getValueAt(0, i);
         }
-        money = new int[row + 1][column + 1];
+        money = new Integer[row + 1][column + 1];
         for(int i = 0; i < jTable3.getRowCount(); i++){
             for(int j = 0; j < jTable3.getColumnCount(); j++){
-                money[i][j] = (int) model3.getValueAt(i, j);
+                money[i][j] = (Integer) model3.getValueAt(i, j);
             }
+            money[i][column] =  masPredloj[i];
+            money[row][i] = masSpros[i];
         }
-        //if(nc.balan1 == nc.balan2){
-            setVisible(false);
+        for(int i = 0; i < row; i++){
+            balan1 += masPredloj[i];
+        }
+        for(int i = 0; i < column; i++){
+            balan2 += masSpros[i];
+        }
+        if(balan1 == balan2){
             conditionSelection();
-            //}
-        /*else{
-            new NotBalans();
-        }*/
         }
-
-        public void conditionSelection(){
-            if(jComboBox1.getSelectedItem() == jComboBox1.getItemAt(0)){
-                if(jCheckBox1.getModel().isSelected()){
-                    new SolutionTheNorthwestCorner();
-
-                }
-                else new OnlyAnswer();
-            }
-
-            if(jComboBox1.getSelectedItem() == jComboBox1.getItemAt(1)){
-                if(jCheckBox1.getModel().isSelected()){
-                    //SolutionFogel
-                }
-                else new OnlyAnswer();
-            }
-            if(jComboBox1.getSelectedItem() == jComboBox1.getItemAt(2)){
-                if(jCheckBox1.getModel().isSelected()){
-                    //SolutionMinElement
-                }
-                else new OnlyAnswer();
-            }
-            if(jComboBox1.getSelectedItem() == jComboBox1.getItemAt(3)){
-                if(jCheckBox1.getModel().isSelected()){
-                    //SolutionMaxElement
-                }
-                else new OnlyAnswer();
-            }
-    }//GEN-LAST:event_jButton1MouseClicked
+        else{
+            new NotBalans();
+        }
+    }
     
+    public void conditionSelection(){
+        if(jComboBox1.getSelectedItem() == jComboBox1.getItemAt(0)){
+            if(jCheckBox1.getModel().isSelected()){
+               new Solution(row, column, balan1, balan2, money).setTitle("Метод Северо-Западного угла");
+            }
+            else new OnlyAnswer();
+        }
+        if(jComboBox1.getSelectedItem() == jComboBox1.getItemAt(1)){
+            if(jCheckBox1.getModel().isSelected()){
+                //SolutionFogel.setTitle("Метод аппроксимации Фогеля угла")
+            }
+            else new OnlyAnswer();
+        }
+        if(jComboBox1.getSelectedItem() == jComboBox1.getItemAt(2)){
+            if(jCheckBox1.getModel().isSelected()){
+                new Solution(row, column, balan1, balan2, money).setTitle("Метод Минимального элемента");
+            }
+            else new OnlyAnswer();
+        }
+        if(jComboBox1.getSelectedItem() == jComboBox1.getItemAt(3)){
+            if(jCheckBox1.getModel().isSelected()){
+                new Solution(row, column, balan1, balan2, money).setTitle("Метод Максимального элемента");
+            }
+            else new OnlyAnswer();
+        }
+    }//GEN-LAST:event_jButton1MouseClicked
+        
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JComboBox<String> jComboBox1;
+    protected javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -318,7 +319,10 @@ public class EnterValuesWindow extends javax.swing.JFrame {
     private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable4;
     // End of variables declaration//GEN-END:variables
-    public int[] masU;
-    public int[] masV;
-    public int[][] money;
+    Integer row, column;
+    Integer balan1 = 0, balan2 = 0;
+    DefaultTableModel model1, model2, model3;
+    int[] masPredloj;
+    int[] masSpros;
+    Integer[][] money;
 }

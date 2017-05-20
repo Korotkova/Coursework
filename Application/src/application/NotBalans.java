@@ -4,7 +4,7 @@ public class NotBalans extends javax.swing.JFrame {
 
     public NotBalans() {
         setTitle("Ошибка баланса");
-        setBounds(330, 100, 500, 300);
+        setLocation(500, 220);
         setResizable(false);
         initComponents();
         setVisible(true);

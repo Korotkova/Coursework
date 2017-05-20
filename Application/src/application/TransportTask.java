@@ -8,7 +8,7 @@ public class TransportTask extends javax.swing.JFrame {
         setVisible(true);
         setTitle("Транспортная задача");
         setResizable(false);
-        setBounds(450, 200, 500, 300);
+        setLocation(450, 200);
         initComponents();
     }
 
@@ -123,13 +123,12 @@ public class TransportTask extends javax.swing.JFrame {
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         setVisible(false);
-        m1 = (Integer) numberModel1.getValue();
-        m2 = (Integer) numberModel2.getValue();
-        new EnterValuesWindow(m1, m2);
+        row = (Integer) numberModel1.getValue();
+        column = (Integer) numberModel2.getValue();
+        new EnterValuesWindow(row, column).setVisible(true);
     }//GEN-LAST:event_jButton1MouseClicked
 
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
@@ -151,8 +150,6 @@ public class TransportTask extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(EnterValuesWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
-        /* Create and display the form */
         new TransportTask();
     }
     
@@ -168,5 +165,5 @@ public class TransportTask extends javax.swing.JFrame {
     private javax.swing.JSpinner jSpinner2;
     private final SpinnerNumberModel numberModel2 = new SpinnerNumberModel(1, 1, 6, 1);
     // End of variables declaration//GEN-END:variables
-    public Integer m1, m2;
+    Integer row, column;
 }
