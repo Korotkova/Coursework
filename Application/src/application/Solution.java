@@ -1,30 +1,28 @@
 package application;
 
 public class Solution extends javax.swing.JFrame {
-    
+   
     Integer row, column;
-    Integer balan1, balan2;
+    Integer balan1, balan2, Z;
     Integer[][] money;
     Integer[][] xMN; 
-    
-    public Solution(Integer row, Integer column, int balan1, int balan2, Integer[][] money) {
+    Integer[] masPredloj;
+    Integer[] masSpros;
+
+    public Solution(Integer row, Integer column, Integer balan1, Integer balan2, Integer[][] money, Integer[] masPredloj, Integer[] masSpros, Integer[][] xMN, Integer Z) {
         this.row = row;
         this.column = column;
         this.balan1 = balan1;
         this.balan2 = balan2;
         this.money = money;
+        this.masPredloj = masPredloj;
+        this.masSpros = masSpros;
+        this.xMN = xMN;
+        this.Z = Z;
         setLocation(330, 100);
         setResizable(false);
         initComponents();
         setVisible(true);
-        NorthwestCorner nc = new NorthwestCorner(row, column, money);
-        nc.setxMN(xMN);
-        for(int i = 0; i < row; i++){
-            for(int j = 0; j < column; j++){
-                System.out.print(xMN[i][j] + "\t");
-            }
-            System.out.println();
-        }
     }
 
     @SuppressWarnings("unchecked")
@@ -48,7 +46,7 @@ public class Solution extends javax.swing.JFrame {
         panel.setBackground(new java.awt.Color(255, 255, 255));
         panel.setPreferredSize(new java.awt.Dimension(700, 550));
 
-        table1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        table1.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         table1.setModel(new javax.swing.table.DefaultTableModel(
             money,
             new String [] {
@@ -70,6 +68,7 @@ public class Solution extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        table1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
         table1.setPreferredSize(new java.awt.Dimension(525, 174));
         table1.setRequestFocusEnabled(false);
         table1.setRowHeight(25);
@@ -83,7 +82,7 @@ public class Solution extends javax.swing.JFrame {
         label2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         label2.setText("Предложение");
 
-        label3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        label3.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         label3.setText("Задача сбалансированна:");
         label3.setToolTipText("");
 
@@ -91,7 +90,7 @@ public class Solution extends javax.swing.JFrame {
         label4.setText("Опорный план:");
         label4.setToolTipText("");
 
-        table2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        table2.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         table2.setModel(new javax.swing.table.DefaultTableModel(
             xMN,
             new String [] {
@@ -129,8 +128,9 @@ public class Solution extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText(Integer.toString(balan1) + " = " + Integer.toString(balan2));
 
         javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
         panel.setLayout(panelLayout);
@@ -154,19 +154,16 @@ public class Solution extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                        .addComponent(label3)
+                        .addGap(32, 32, 32))
                     .addGroup(panelLayout.createSequentialGroup()
                         .addGap(53, 53, 53)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(32, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
-                                .addComponent(label3)
-                                .addGap(32, 32, 32))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(45, 45, 45))))))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         panelLayout.setVerticalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -213,24 +210,9 @@ public class Solution extends javax.swing.JFrame {
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         setVisible(false);
-        EnterValuesWindow window = new EnterValuesWindow(row, column);
-        if(window.jComboBox1.getSelectedItem() == window.jComboBox1.getItemAt(0)){
-           // NC();
-        }
-        new PotentialsMethodForMIN().setVisible(true);
+        new OnlyAnswer(Z);
     }//GEN-LAST:event_jButton1MouseClicked
 
-    /*public void NC(){
-        NorthwestCorner nc = new NorthwestCorner(money);
-        nc.setxMN(xMN);
-        for(int i = 0; i < row; i++){
-            for(int j = 0; j < column; j++){
-                System.out.print(xMN[i][j] + "\t");
-            }
-            System.out.println();
-        }
-    }*/
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;

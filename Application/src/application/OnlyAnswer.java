@@ -2,7 +2,10 @@ package application;
 
 public class OnlyAnswer extends javax.swing.JFrame {
     
-    public OnlyAnswer() {
+    Integer Z;
+    
+    public OnlyAnswer(Integer Z) {
+        this.Z = Z;
         setTitle("Ответ");
         setLocation(500, 300);
         setResizable(false);
@@ -27,6 +30,7 @@ public class OnlyAnswer extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel2.setText(Integer.toString(Z) + " ус. ед.");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

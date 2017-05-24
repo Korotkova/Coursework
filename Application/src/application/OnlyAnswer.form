@@ -81,6 +81,9 @@
             </Property>
             <Property name="horizontalAlignment" type="int" value="2"/>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jLabel2.setText(Integer.toString(Z) + &quot; &#x443;&#x441;. &#x435;&#x434;.&quot;);"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

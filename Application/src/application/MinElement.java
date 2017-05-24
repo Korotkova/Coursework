@@ -1,58 +1,65 @@
 package application;
 
 public class MinElement extends Elements {
-    
-    int rows;
-    int columns;
-    int[][] moneyMN;
-    int[][] xMN;
-    int[][] m;
-    int min, J, I, Z, sum = 0;
+ 
+    Integer[][] m;
+    Integer min, Z, sum = 0;
+    Elements e;
     boolean s = true;
 
-    public MinElement(int[][] moneyMN, int[][] xMN, int rows, int columns) {
-        super(moneyMN, xMN, rows, columns);
+    public MinElement(Integer rows, Integer columns, Integer[][] money) {
+        super(rows, columns, money);
     }
-    
+
     public void minArr(){
-        min = moneyMN[0][0];
+        min = money[0][0];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                if(moneyMN[i][j] != 0){
+                if(money[i][j] != 0){
                     if(min == 0){
-                        min = moneyMN[i][j];
+                        min = money[i][j];
                         I = i;
                         J = j;
                     }
-                    if(moneyMN[i][j] < min) {
-                        min = moneyMN[i][j];
+                    if(money[i][j] < min) {
+                        min = money[i][j];
                         I = i;
                         J = j;
                     }
                 }
-                else if(moneyMN[i][j] == 0){
-                    sum += moneyMN[i][j];
+                else if(money[i][j] == 0){
+                    sum += money[i][j];
                     s = false;
                 }
             }
         }
-        System.out.println("Mинимальный элемент = " + min + " находящийся в строке " + I + "\tв столбце " + J);
+        //System.out.println("Mинимальный элемент = " + min + " находящийся в строке " + I + "\tв столбце " + J);
+    }
+
+    public Integer[][] getxMN() {
+        return xMN;
+    }
+    
+    public Integer getZ() {
+        return Z;
     }
     
     public void cycle(){
-        for(int i = 0; i < moneyMN.length; i++){
-            if(xMN[i][xMN.length - 1] != 0 || xMN[xMN.length - 1][i] != 0){
-                for(int j = 0; j < moneyMN[i].length; j++){
-                    System.out.println("МАССИВ:");
-                    for (int[] moneyMN1 : moneyMN){
+        e = new Elements(rows, columns, money);
+        e.setMoneyNM();
+        for(int i = 0; i < money.length; i++){
+            if(e.xMN[i][e.xMN.length - 1] != 0 || e.xMN[e.xMN.length - 1][i] != 0){
+                for(int j = 0; j < money[i].length; j++){
+                    /*System.out.println("МАССИВ:");
+                    for (Integer[] moneyMN1 : money){
                         for (int k = 0; k < moneyMN1.length; k++){
                             System.out.print(moneyMN1[k] + "\t");
                         }
                         System.out.println();
-                    }
+                    }*/
                     minArr();
-                    step();
-                    raschetZ(I,J);
+                    e.step();
+                    e.raschetZ(I,J);
                     if(s) break;
                 }
             }

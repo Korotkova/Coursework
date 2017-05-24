@@ -1,7 +1,5 @@
 package application;
 
-import javax.swing.JTable;
-
 public final class NorthwestCorner {
     
     Integer rows, columns;  
@@ -19,8 +17,8 @@ public final class NorthwestCorner {
     String children;//для запоминания ячеек
     int kolTochek = 0;
     Integer Z = 0;//ЦФ
-    JTable table1, table2, table3, table4;
-    int balan1 = 0, balan2 = 0;
+    Integer balan1 = 0, balan2 = 0;
+    PotentialsMethod method;
     
     public void setMoneyNM() {//расчет баланса и опорного плана
         xMN = new Integer[rows + 1][columns + 1];
@@ -28,6 +26,8 @@ public final class NorthwestCorner {
             for (int j = 0; j < columns; j++) {
                 xMN[i][j] = 0;
             }
+            xMN[i][columns] = money[i][columns];
+            xMN[rows][i] = money[rows][i];
         }
         masSpros = new Integer[rows];
         for (int i = 0; i < rows; i++) {
@@ -104,49 +104,8 @@ public final class NorthwestCorner {
                 }
             }
         }
-       //System.out.println("Оптимальное решение Z = " + Z1 + " ус. ед.");
-       Z = Z1;
+        Z = Z1;
         flagfirstX = false;
-        /*for (int i = 0; i < rows; i++) {
-            System.out.println("U[" + (i + 1) + "] = " + masPredloj[i]);
-        }
-        for (int j = 0; j < columns; j++) {
-            System.out.println("V[" + (j + 1) + "] = " + masSpros[j]);
-        }*/
-    }
-
-    public boolean potenshialNotBaz() {     //если нет больше положительных вернет false
-        int perN = 0; 
-        int per = 0;
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                if (xMN[i][j] == 0) {
-                    per = masPredloj[i] + masSpros[j] - money[i][j];
-                    //System.out.println("Для x[" + (i + 1) + "][" + (j + 1) + "]: " + masPredloj[i] + "+" + masSpros[j] + "-" + money[i][j] + " = " + per);
-                    if (per > 0 & per > perN) {
-                        perN = per;
-                        kI = i;
-                        kJ = j;
-                    }
-                }
-            }
-        }
-        for (int i = 0; i < rows; i++) {
-            masPredloj[i] = 999999;
-        }
-        for (int i = 0; i < columns; i++) {
-            masSpros[i] = 999999;
-        }
-          //заполним вводимую в базис переенную значением
-        //любое значение, лишь бы не ноль!
-        pyti[kI][kJ] = 99999;
-        if (perN > 0) {
-            //System.out.println("Вводимая в БП x[" + (kI + 1) + "][" + (kJ + 1) + "]");
-            return true;
-        } 
-        else {
-            return false;
-        }
     }
 
     public void cleanTable() {
@@ -236,20 +195,6 @@ public final class NorthwestCorner {
         while (!proverkaround()) {
             cleanTable();
         }
-        //System.out.println("Для пути:");//поместить в JTabble3
-        /*for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                if(pyti[i][j] == 99999){
-                    System.out.print("*" + "\t");}
-                else{
-                    if(pyti[i][j] == 8888888){
-                        System.out.print("0" + "\t");
-                    }
-                    else System.out.print(pyti[i][j] + "\t");
-                    }
-            }
-            System.out.println();
-        }*/
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 if (pyti[i][j] != 0) {
@@ -405,7 +350,6 @@ public final class NorthwestCorner {
                 i += 4;
             }
         }
-        //System.out.println("Минимальное значение БП со знаком \"-\": " + minOTRIc);
         //отнимаю минимальное у "-"
         for (int i = 0; i < xyT.length;) {
             xMN[xyT[i]][xyT[i + 1]] -= minOTRIc;
@@ -435,7 +379,6 @@ public final class NorthwestCorner {
                 xMN[xyT[i]][xyT[i + 1]] = 8888888;
             }
         }
-        //System.out.println("Выводимая из БП х[" + (vonI + 1) + "][" + (vonJ + 1) + "]");
         kolTochek = 0;
        //После вывода
         for (int i = 0; i < rows; i++) {
@@ -449,34 +392,30 @@ public final class NorthwestCorner {
         return xMN;
     }
 
-    public void setxMN(Integer[][] xMN) {
-        this.xMN = xMN;
+    public Integer getZ() {
+        return Z;
     }
     
-    
-    
-    public NorthwestCorner(Integer row, Integer column, Integer[][] money){
-        this.money = money;
-        this.rows = row;
-        this.columns = column;
+    public void cycle(){
         setMoneyNM();
         poiskbazper(0, 0);
         potenshialBaz();
-        while(potenshialNotBaz()){
-            forWay();
-            WayZamknut();
-            begay();
-            potenshialBaz();
+        method = new PotentialsMethod(rows, columns, money, masPredloj, masSpros, xMN);
+        while(method.potenshialNotBaz()){
+            method.forWay();
+            method.WayZamknut();
+            method.begay();
+            method.potenshialBaz();
         }
-        
-        /*System.out.println("Отрицательных потенциалов нет\nНевозможно уменьшить стоимость доставки продукции");
-        System.out.println("Ответ:");
-        for (int i = 0; i < columns; i++) {
-            for (int j = 0; j < rows; j++) {
-                System.out.print(xMN[i][j] + "\t");
-            }
-            System.out.println();
-        }
-        System.out.println("Z = " + Z + " ус. ед.");*/
+    }
+    
+    public NorthwestCorner(Integer row, Integer column, Integer balan1, Integer balan2, Integer[][] money, Integer[] masPredloj, Integer[] masSpros){
+        this.money = money;
+        this.rows = row;
+        this.columns = column;
+        this.balan1 = balan1;
+        this.balan2 = balan2;
+        this.masPredloj = masPredloj;
+        this.masSpros = masSpros;
     }
 }

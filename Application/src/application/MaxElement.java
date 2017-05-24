@@ -2,16 +2,16 @@ package application;
 
 public class MaxElement extends Elements{
     
-    int rows;
-    int columns;
-    int[][] moneyMN;
-    int[][] xMN;
-    int[][] m;
-    int max, J, I, Z, sum = 0;
+    Integer rows;
+    Integer columns;
+    Integer[][] moneyMN;
+    Integer[][] m;
+    Integer max, Z, sum = 0;
+    Elements e;
     boolean s = true;
 
-    public MaxElement(int[][] moneyMN, int[][] xMN, int rows, int columns) {
-        super(moneyMN, xMN, rows, columns);
+    public MaxElement(Integer rows, Integer columns, Integer[][] money) {
+        super(rows, columns, money);
     }
 
     public void maxArr(){
@@ -36,23 +36,25 @@ public class MaxElement extends Elements{
                 }
             }
         }
-        System.out.println("Mаксимальный элемент = " + max + " находящийся в строке " + I + "\tв столбце " + J);
+        //System.out.println("Mаксимальный элемент = " + max + " находящийся в строке " + I + "\tв столбце " + J);
     }
     
     public void cycle(){
+        e = new Elements(rows, columns, money);
+        e.setMoneyNM();
         for(int i = 0; i < moneyMN.length; i++){
-            if(xMN[i][xMN.length - 1] != 0 || xMN[xMN.length - 1][i] != 0){
+            if(e.xMN[i][e.xMN.length - 1] != 0 || e.xMN[e.xMN.length - 1][i] != 0){
                 for(int j = 0; j < moneyMN[i].length; j++){
-                    System.out.println("МАССИВ:");
+                    /*System.out.println("МАССИВ:");
                     for (int[] moneyMN1 : moneyMN){
                         for (int k = 0; k < moneyMN1.length; k++){
                             System.out.print(moneyMN1[k] + "\t");
                         }
                         System.out.println();
-                    }
+                    }*/
                     maxArr();
-                    step();
-                    raschetZ(I,J);
+                    e.step();
+                    e.raschetZ(I,J);
                     if(s) break;
                 }
             }

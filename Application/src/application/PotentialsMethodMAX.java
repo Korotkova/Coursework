@@ -2,13 +2,17 @@ package application;
 
 public class PotentialsMethodMAX extends PotentialsMethod{
     
-    int m;//предложение -i-строки
-    int n;//спрос - j - столбцы
-    int[][] moneyMN;
-    int[][] xMN;
-    
-    public PotentialsMethodMAX(int[][] mon, int[][] mas, int i, int j) {
-        super(mon, mas, i, j);
+    Integer m;//предложение -i-строки
+    Integer n;//спрос - j - столбцы
+    Integer[][] moneyMN;
+    Integer[][] xMN;
+
+    public PotentialsMethodMAX(Integer m, Integer n, Integer[][] moneyMN, Integer[][] xMN, Integer row, Integer column, Integer[][] money, Integer[] masPredloj, Integer[] masSpros, Integer[][] xmn) {
+        super(row, column, money, masPredloj, masSpros, xmn);
+        this.m = m;
+        this.n = n;
+        this.moneyMN = moneyMN;
+        this.xMN = xMN;
     }
     
     public boolean potenshialNotBaz() {//если нет больше положительных вернет false
@@ -18,8 +22,8 @@ public class PotentialsMethodMAX extends PotentialsMethod{
             for (int j = 0; j < n; j++) {
 
                 if (xMN[i][j] == 0) {
-                    per = masU[i] + masV[j] - moneyMN[i][j];
-                    System.out.println("Для x[" + (i + 1) + "][" + (j + 1) + "]: " + masU[i] + "+" + masV[j] + "-" + moneyMN[i][j] + " = " + per);
+                    per = masSpros[i] + masPredloj[j] - moneyMN[i][j];
+                    System.out.println("Для x[" + (i + 1) + "][" + (j + 1) + "]: " + masSpros[i] + "+" + masPredloj[j] + "-" + moneyMN[i][j] + " = " + per);
                     if (per < 0 & per < perN) {
                         perN = per;
                         kI = i;
@@ -29,10 +33,10 @@ public class PotentialsMethodMAX extends PotentialsMethod{
             }
         }
         for (int i = 0; i < m; i++) {
-            masU[i] = 999999;
+            masSpros[i] = 999999;
         }
         for (int i = 0; i < n; i++) {
-            masV[i] = 999999;
+            masPredloj[i] = 999999;
         }
           //заполним вводимую в базис переенную значением
         //любое значение, лишь бы не ноль!
