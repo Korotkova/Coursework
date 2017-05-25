@@ -1,13 +1,13 @@
 package application;
 
-public class PotentialsMethodMIN{
-
-    Integer m;//предложение -i-строки
-    Integer n;//спрос - j - столбцы
-    Integer[][] moneyMN;
+public class PotentialsMethodForMin{
+    
+    Integer rows;//предложение -i-строки
+    Integer columns;//спрос - j - столбцы
+    Integer[][] money;
     Integer[][] xMN;
-    Integer[] masU;
-    Integer[] masV;
+    Integer[] masSpros;
+    Integer[] masPredloj;
     boolean flagfirstX = false; // как только найдем первую базисную делаем true
     int kI = 0;//строка вводимой переменной в базис
     int kJ = 0;//столбец вводимой переменной в базис
@@ -17,88 +17,23 @@ public class PotentialsMethodMIN{
     String pytuperem;
     String children;//для запоминания ячеек
     int kolTochek = 0;
-    Integer Z=0;
     
-    public PotentialsMethodMIN(Integer[][] m, Integer[][] xMN, Integer row, Integer column) {
-        this.m = row;
-        this.n = column;
-        this.xMN = xMN;
-        this.moneyMN = m;
+    public PotentialsMethodForMin(Integer row, Integer column, Integer[][] money, Integer[] masPredloj, Integer[] masSpros, Integer[][] xmn) {
+        this.rows = row;
+        this.columns = column;
+        this.xMN = xmn;
+        this.money = money;
+        this.masPredloj = masPredloj;
+        this.masSpros = masSpros;
     }
     
-    public boolean vse(){ //проеряет, все ли мы нашли потенциалы, вернет тру если все, иначе волсе
-        boolean ot = true;
-        for (int i = 0; i < m; i++) {
-           if(masU[i] == 999999) {
-           ot = false;
-               break;}
-        }
-        for (int i = 0; i < n; i++) {
-            if(masV[i] == 999999) {
-           ot = false;
-               break;}
-        }
-        return ot;
-    }
-    
-    public void potenshialBaz() {
-        masU = new Integer[m];
-        for (int i = 0; i < m; i++) {
-            masU[i] = 999999;
-        }
-        masV = new Integer[n];
-        for (int i = 0; i < n; i++) {
-            masV[i] = 999999;
-        }
-        pyti = new int[m + 1][n + 1];
-        for (int i = 0; i < m + 1; i++) {
-            for (int j = 0; j < n + 1; j++) {
-                pyti[i][j] = xMN[i][j];
-            }
-        }
-        int k = 0;
-        while (!vse()){
-            for (int i = 0; i < m; i++) {
-                for (int j = 0; j < n; j++) {
-                    if (xMN[i][j] != 0 & !flagfirstX) {
-                        masU[i] = 0;
-                        k = i;
-                        flagfirstX = true;
-                    }
-                    if (xMN[i][j] != 0 & flagfirstX) {
-                        if (i == k & masU[k] == 0) {
-                            masV[j] = moneyMN[i][j];
-                        }
-                        if (masU[i] == 999999 & k != i & masV[j] != 999999) {
-                            masU[i] = moneyMN[i][j] - masV[j];
-                        }
-                        if (masV[j] == 999999 & k != i & masU[i] != 999999) {
-                            masV[j] = moneyMN[i][j] - masU[i];
-                        }
-                    }
-                }
-            }
-        }
-        int Z1=0;
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (xMN[i][j] != 0  & xMN[i][j] != 8888888){
-                    Z1 += xMN[i][j] * moneyMN[i][j];
-                }
-            }
-        }
-        Z = Z1;
-        flagfirstX = false;
-    }
-     
-    public boolean potenshialNotBaz() {//если нет больше положительных вернет false
+    public boolean potenshialNotBaz() {     //если нет больше положительных вернет false
         int perN = 0; 
         int per = 0;
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
                 if (xMN[i][j] == 0) {
-                    per = masU[i] + masV[j] - moneyMN[i][j];
+                    per = masPredloj[i] + masSpros[j] - money[i][j];
                     if (per > 0 & per > perN) {
                         perN = per;
                         kI = i;
@@ -106,16 +41,9 @@ public class PotentialsMethodMIN{
                     }
                 }
             }
-        }
-        for (int i = 0; i < m; i++) {
-            masU[i] = 999999;
-        }
-        for (int i = 0; i < n; i++) {
-            masV[i] = 999999;
-        }
+        }        
           //заполним вводимую в базис переенную значением
         //любое значение, лишь бы не ноль!
-        pyti[kI][kJ] = 99999;
         if (perN > 0) {
             return true;
         } 
@@ -123,7 +51,7 @@ public class PotentialsMethodMIN{
             return false;
         }
     }
-
+    
     public void cleanTable() {
         pereshet();
         pereshet();
@@ -132,8 +60,8 @@ public class PotentialsMethodMIN{
     public void pereshet() {
         int kol = 0;
         //фиксирую столбец и бегаю по столбцу
-        for (int j = 0, i; j < n; j++) {
-            for (i = 0; i < m; i++) {
+        for (int j = 0, i; j < columns; j++) {
+            for (i = 0; i < rows; i++) {
                 if (pyti[i][j] != 0) {
                     kol++;
                 }
@@ -148,8 +76,8 @@ public class PotentialsMethodMIN{
             kol = 0;
         }
         //фиксирую строчку и бегаю по ней
-        for (int i = 0, j; i < m; i++) {
-            for (j = 0; j < n; j++) {
+        for (int i = 0, j; i < rows; i++) {
+            for (j = 0; j < columns; j++) {
                 if (pyti[i][j] != 0) {
                     kol++;
                 }
@@ -166,7 +94,7 @@ public class PotentialsMethodMIN{
     }
 
     public void cleanSTR(int i) {
-        for (int j = 0; j < n; j++) {
+        for (int j = 0; j < columns; j++) {
             if (pyti[i][j] != 0) {
                 pyti[i][j] = 0;
             }
@@ -174,7 +102,7 @@ public class PotentialsMethodMIN{
     }
 
     public void cleanSTOl(int j) {
-        for (int i = 0; i < m; i++) {
+        for (int i = 0; i < rows; i++) {
             if (pyti[i][j] != 0) {
                 pyti[i][j] = 0;
             }
@@ -183,8 +111,8 @@ public class PotentialsMethodMIN{
 
     public boolean proverkaround() {
         boolean flag = true;
-        for (int j = 0; j < n; j++) {
-            if (pyti[m][j] == 1) {
+        for (int j = 0; j < columns; j++) {
+            if (pyti[rows][j] == 1) {
                 flag = false;
                 break;
             }
@@ -193,8 +121,8 @@ public class PotentialsMethodMIN{
             return false;
         } 
         else {
-            for (int i = 0; i < m; i++) {
-                if (pyti[i][n] == 1) {
+            for (int i = 0; i < rows; i++) {
+                if (pyti[i][columns] == 1) {
                     flag = false;
                     break;
                 }
@@ -211,8 +139,21 @@ public class PotentialsMethodMIN{
         while (!proverkaround()) {
             cleanTable();
         }
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                if(pyti[i][j] == 99999){
+                    System.out.print("*" + "\t");}
+                else{
+                    if(pyti[i][j] == 8888888){
+                        System.out.print("0" + "\t");
+                    }
+                    else System.out.print(pyti[i][j] + "\t");
+                    }
+            }
+            System.out.println();
+        }
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
                 if (pyti[i][j] != 0) {
                     kolTochek++;
                 }
@@ -237,10 +178,10 @@ public class PotentialsMethodMIN{
 
     public String poiskBSprava(int sr, int st) {
         String ret = "null";
-        if (st == n - 1) {
+        if (st == columns - 1) {
             return ret;
         } else {
-            for (int j = st + 1; j < n; j++) {
+            for (int j = st + 1; j < columns; j++) {
                 if (pyti[sr][j] != 0) {
                     ret = sr + "." + st + "." + sr + "." + j;
 
@@ -267,10 +208,10 @@ public class PotentialsMethodMIN{
 
     public String poiskBSnizy(int sr, int st) {
         String ret = "null";
-        if (sr == m - 1) {
+        if (sr == rows - 1) {
             return ret;
         } else {
-            for (int i = sr + 1; i < m; i++) {
+            for (int i = sr + 1; i < rows; i++) {
                 if (pyti[i][st] != 0) {
                     ret = sr + "." + st + "." + i + "." + st;
 
@@ -337,11 +278,11 @@ public class PotentialsMethodMIN{
     }
     
     public void begay() {
-    for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
+    for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
                 if (pyti[i][j] == 8888888) {
                     xMN[i][j] = 0;
-                pyti[i][j] = 0;
+                    pyti[i][j] = 0;
                 }
             }
         }
@@ -389,8 +330,8 @@ public class PotentialsMethodMIN{
             }
         }
         kolTochek = 0;
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
                 pyti[i][j] = xMN[i][j];
             }
         }

@@ -1,6 +1,6 @@
 package application;
 
-public final class NorthwestCorner {
+public final class NorthwestCornerMIN {
     
     Integer rows, columns;  
     Integer[] masV;
@@ -18,7 +18,7 @@ public final class NorthwestCorner {
     int kolTochek = 0;
     Integer Z = 0;//ЦФ
     Integer balan1 = 0, balan2 = 0;
-    PotentialsMethod method;
+    PotentialsMethodForMin method;
     
     public void setMoneyNM() {//расчет баланса и опорного плана
         xMN = new Integer[rows + 1][columns + 1];
@@ -73,29 +73,29 @@ public final class NorthwestCorner {
     }
 
     public void potenshialBaz() {//расчет ЦФ и нахождение потенциалов U,V
-       int k = 0;
-       while (!vse())
-        {for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-               if (xMN[i][j] != 0 & !flagfirstX) {
-                    masV[i] = 0;
-                    k = i;
-                    flagfirstX = true;
-                }
-                if (xMN[i][j] != 0 & flagfirstX) {
-                    if (i == k & masV[k] == 0) {
-                        masU[j] = money[i][j];
+        int k = 0;
+        while (!vse()) {
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < columns; j++) {
+                   if (xMN[i][j] != 0 & !flagfirstX) {
+                        masV[i] = 0;
+                        k = i;
+                        flagfirstX = true;
                     }
-                    if (masV[i] == 999999 & k != i & masU[j] != 999999) {
-                        masV[i] = money[i][j] - masU[j];
-                    }
-                    if (masU[j] == 999999 & k != i & masV[i] != 999999) {
-                        masU[j] = money[i][j] - masV[i];
+                    if (xMN[i][j] != 0 & flagfirstX) {
+                        if (i == k & masV[k] == 0) {
+                            masU[j] = money[i][j];
+                        }
+                        if (masV[i] == 999999 & k != i & masU[j] != 999999) {
+                            masV[i] = money[i][j] - masU[j];
+                        }
+                        if (masU[j] == 999999 & k != i & masV[i] != 999999) {
+                            masU[j] = money[i][j] - masV[i];
+                        }
                     }
                 }
             }
         }
-    }
         int Z1=0;
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
@@ -120,7 +120,7 @@ public final class NorthwestCorner {
         setMoneyNM();
         poiskbazper(0, 0);
         potenshialBaz();
-        method = new PotentialsMethod(rows, columns, money, masV, masU, xMN);
+        method = new PotentialsMethodForMin(rows, columns, money, masV, masU, xMN);
         while(method.potenshialNotBaz()){
             method.forWay();
             method.WayZamknut();
@@ -129,7 +129,7 @@ public final class NorthwestCorner {
         }
     }
     
-    public NorthwestCorner(Integer row, Integer column, Integer balan1, Integer balan2, Integer[][] money){
+    public NorthwestCornerMIN(Integer row, Integer column, Integer balan1, Integer balan2, Integer[][] money){
         this.money = money;
         this.rows = row;
         this.columns = column;
