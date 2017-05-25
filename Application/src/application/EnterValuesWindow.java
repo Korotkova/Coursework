@@ -286,7 +286,7 @@ public class EnterValuesWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1MouseClicked
     
     void NC(){
-        nc = new NorthwestCorner(row, column, balan1, balan2, money, masPredloj, masSpros);
+        nc = new NorthwestCorner(row, column, balan1, balan2, money);
         nc.cycle();
         this.xMN = nc.getxMN();
         this.Z = nc.getZ();
@@ -308,7 +308,7 @@ public class EnterValuesWindow extends javax.swing.JFrame {
     
     void MaxElement(){
         maxElement = new MaxElement(row, column, money);
-        maxElement.cycle();
+        maxElement.cycles();
         this.xMN = minElement.getxMN();
         this.Z = minElement.getZ();
     }

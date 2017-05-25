@@ -60,70 +60,6 @@ public class PotentialsMethod{
         }
     }
     
-    public boolean vse(){ //проеряет, все ли мы нашли потенциалы, вернет тру если все, иначе волсе
-        boolean ot = true;
-        for (int i = 0; i < rows; i++) {
-           if(masSpros[i] == 999999) {
-           ot = false;
-               break;}
-        }
-        for (int i = 0; i < columns; i++) {
-            if(masPredloj[i] == 999999) {
-           ot = false;
-               break;}
-        }
-        return ot;
-    }
-    
-    public void potenshialBaz() {
-        pyti = new int[rows + 1][columns + 1];
-        for (int i = 0; i < rows + 1; i++) {
-            for (int j = 0; j < columns + 1; j++) {
-                pyti[i][j] = xMN[i][j];
-            }
-        }
-        int k = 0;
-        while (!vse()){
-            for (int i = 0; i < rows; i++) {
-                for (int j = 0; j < columns; j++) {
-                    if (xMN[i][j] != 0 & !flagfirstX) {
-                        masSpros[i] = 0;
-                        k = i;
-                        flagfirstX = true;
-                    }
-                    if (xMN[i][j] != 0 & flagfirstX) {
-                        if (i == k & masSpros[k] == 0) {
-                            masPredloj[j] = money[i][j];
-                        }
-                        if (masSpros[i] == 999999 & k != i & masPredloj[j] != 999999) {
-                            masSpros[i] = money[i][j] - masPredloj[j];
-                        }
-                        if (masPredloj[j] == 999999 & k != i & masSpros[i] != 999999) {
-                            masPredloj[j] = money[i][j] - masSpros[i];
-                        }
-                    }
-                }
-            }
-        }
-        int Z1=0;
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                if (xMN[i][j] != 0  & xMN[i][j] != 8888888){
-                    Z1 += xMN[i][j] * money[i][j];
-                }
-            }
-        }
-        System.out.println("Оптимальное решение Z = " + Z1 + " ус. ед.");
-        Z = Z1;
-        flagfirstX = false;
-        for (int i = 0; i < rows; i++) {
-            System.out.println("U[" + (i + 1) + "] = " + masSpros[i]);
-        }
-        for (int j = 0; j < columns; j++) {
-            System.out.println("V[" + (j + 1) + "] = " + masPredloj[j]);
-        }
-    }
-    
     public void cleanTable() {
         pereshet();
         pereshet();
@@ -410,5 +346,9 @@ public class PotentialsMethod{
                 pyti[i][j] = xMN[i][j];
             }
         }
+    }
+
+    public Integer[][] getxMN() {
+        return xMN;
     }
 }

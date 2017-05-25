@@ -1,19 +1,27 @@
 package application;
 
-public class MaxElement extends Elements{
+public class MaxElement{
     
     Integer rows;
     Integer columns;
     Integer[][] moneyMN;
     Integer[][] m;
-    Integer max, Z, sum = 0;
-    Elements e;
+    Integer[][] xMN;
+    int  max, sum = 0, I, J;
     boolean s = true;
-
-    public MaxElement(Integer rows, Integer columns, Integer[][] money) {
-        super(rows, columns, money);
+    Integer Z = 0;
+      
+    public void setMoneyNM() {
+        xMN = new Integer[rows + 1][columns + 1];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                xMN[i][j] = 0;
+            }
+            xMN[i][columns] = moneyMN[i][columns];
+            xMN[rows][i] = moneyMN[rows][i];
+        }
     }
-
+    
     public void maxArr(){
         max = moneyMN[0][0];
         for (int i = 0; i < rows; i++) {
@@ -32,32 +40,89 @@ public class MaxElement extends Elements{
                 }
                 else if(moneyMN[i][j] == 0){
                     sum += moneyMN[i][j];
-                    s = false;
                 }
             }
         }
-        //System.out.println("Mаксимальный элемент = " + max + " находящийся в строке " + I + "\tв столбце " + J);
+        if(sum == 0)    s = false;
+    }
+     
+    public void step(){
+        poiskbazper(I, J);
+        for(int i = 0; i < rows+1; i++){
+            for(int j = 0; j < columns+1; j++){
+                if(xMN[rows][j] == 0) cleanSTOLmoney(J);
+                if(xMN[i][columns] == 0) cleanSTRmoney(I);
+            }
+        }
+    }
+    
+    public void poiskbazper(int i, int j){
+        xMN[i][j] = Math.min(xMN[i][columns], xMN[rows][j]);
+        xMN[i][columns] -= xMN[i][j];
+        xMN[rows][j] -= xMN[i][j];
+        moneyMN[i][columns] -= xMN[i][j];
+        moneyMN[rows][j] -= xMN[i][j];
+    }
+    
+    public void cleanSTRmoney(int i){
+        for(int j = 0; j < columns+1; j++){
+            if(xMN[i][columns] == 0){
+                moneyMN[i][j] = 0;
+            }
+        }
+    }
+    
+    public void cleanSTOLmoney(int j) {
+        for(int i = 0; i < rows + 1; i++){
+            if(xMN[rows][j] == 0) {
+                moneyMN[i][j] = 0;
+            }
+        }
+    }
+    
+    public void raschetZ(int i, int j){
+        int Z1 = 0;
+        Z1 += m[i][j] * xMN[i][j];
+        Z += Z1;
     }
     
     public void cycle(){
-        e = new Elements(rows, columns, money);
-        e.setMoneyNM();
         for(int i = 0; i < moneyMN.length; i++){
-            if(e.xMN[i][e.xMN.length - 1] != 0 || e.xMN[e.xMN.length - 1][i] != 0){
+            if(xMN[i][xMN.length - 1] != 0 || xMN[xMN.length - 1][i] != 0){
                 for(int j = 0; j < moneyMN[i].length; j++){
-                    /*System.out.println("МАССИВ:");
-                    for (int[] moneyMN1 : moneyMN){
-                        for (int k = 0; k < moneyMN1.length; k++){
-                            System.out.print(moneyMN1[k] + "\t");
-                        }
-                        System.out.println();
-                    }*/
                     maxArr();
-                    e.step();
-                    e.raschetZ(I,J);
+                    step();
+                    raschetZ(I,J);
                     if(s) break;
                 }
             }
         }
-    } 
+    }
+    
+    public void cycles() {
+        setMoneyNM();
+        cycle();
+        PotentialsMethodMAX pm = new PotentialsMethodMAX(m, xMN, rows, columns);
+        pm.potenshialBaz();
+        while(pm.potenshialNotBaz()){
+            pm.forWay();
+            pm.WayZamknut();
+            pm.begay();
+            pm.potenshialBaz();
+        }
+    }
+
+    public Integer[][] getxMN() {
+        return xMN;
+    }
+
+    public Integer getZ() {
+        return Z;
+    }
+
+    public MaxElement(Integer rows, Integer columns, Integer[][] moneyMN) {
+        this.rows = rows;
+        this.columns = columns;
+        this.moneyMN = moneyMN;
+    }
 }
