@@ -13,7 +13,7 @@ public class PotentialsMethodMAX {
     int kJ = 0;//столбец вводимой переменной в базис
     int vonI = 0;//строка выводимой переменной из базиса
     int vonJ = 0;//столбец выводимой переменной из базиса
-    int[][] pyti;//для замкнутого цикла
+    Integer[][] pyti;//для замкнутого цикла
     String pytuperem;
     String children;//для запоминания ячеек
     int kolTochek = 0;
@@ -27,6 +27,24 @@ public class PotentialsMethodMAX {
         this.masSpros = masSpros;
     }
     
+    public void poiskbazper(int i, int j) {
+        xMN[i][j] = Math.min(xMN[i][columns], xMN[rows][j]);
+        xMN[i][columns] -= xMN[i][j];
+        xMN[rows][j] -= xMN[i][j];
+        if (xMN[i][columns] == 0 & xMN[rows][j] != 0) {
+            poiskbazper(i + 1, j);
+        }
+        if (xMN[i][columns] != 0 & xMN[rows][j] == 0) {
+            poiskbazper(i, j + 1);
+        }
+        pyti = new Integer[rows + 1][columns + 1];
+        for (i = 0; i < rows + 1; i++) {
+            for (j = 0; j < columns + 1; j++) {
+                pyti[i][j] = xMN[i][j];
+            }
+        }
+    }
+
     public boolean potenshialNotBaz() {     //если нет больше положительных вернет false
         int perN = 0; 
         int per = 0;
@@ -52,7 +70,7 @@ public class PotentialsMethodMAX {
         }
     }
     
-    public void cleanTable() {
+     public void cleanTable() {
         pereshet();
         pereshet();
     }
@@ -138,19 +156,6 @@ public class PotentialsMethodMAX {
        cleanTable();
         while (!proverkaround()) {
             cleanTable();
-        }
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                if(pyti[i][j] == 99999){
-                    System.out.print("*" + "\t");}
-                else{
-                    if(pyti[i][j] == 8888888){
-                        System.out.print("0" + "\t");
-                    }
-                    else System.out.print(pyti[i][j] + "\t");
-                    }
-            }
-            System.out.println();
         }
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
@@ -268,7 +273,7 @@ public class PotentialsMethodMAX {
                 }
             }
         }
-        String sp[] = pytuperem.split("\\.");
+        String[] sp = pytuperem.split("\\.");
         int bi = Integer.parseInt(sp[2]);
         int bj = Integer.parseInt(sp[3]);
         children = bi + "." + bj + ".";
@@ -335,5 +340,9 @@ public class PotentialsMethodMAX {
                 pyti[i][j] = xMN[i][j];
             }
         }
+    }
+
+    public Integer[][] getxMN() {
+        return xMN;
     }
 }

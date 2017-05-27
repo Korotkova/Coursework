@@ -8,17 +8,18 @@ public final class NorthwestCornerMIN {
     Integer[][] money;
     Integer[][] xMN ;//опорный план
     boolean flagfirstX = false; // как только найдем первую базисную делаем true
-    int kI = 0;//строка вводимой переменной в базис
-    int kJ = 0;//столбец вводимой переменной в базис
-    int vonI = 0;//строка выводимой переменной из базиса
-    int vonJ = 0;//столбец выводимой переменной из базиса
     Integer[][] pyti;//для замкнутого цикла
-    String pytuperem;
-    String children;//для запоминания ячеек
-    int kolTochek = 0;
     Integer Z = 0;//ЦФ
     Integer balan1 = 0, balan2 = 0;
-    PotentialsMethodForMin method;
+    PotentialsMethodMIN method;
+    
+    public NorthwestCornerMIN(Integer row, Integer column, Integer balan1, Integer balan2, Integer[][] money){
+        this.money = money;
+        this.rows = row;
+        this.columns = column;
+        this.balan1 = balan1;
+        this.balan2 = balan2;
+    }
     
     public void setMoneyNM() {//расчет баланса и опорного плана
         xMN = new Integer[rows + 1][columns + 1];
@@ -120,20 +121,12 @@ public final class NorthwestCornerMIN {
         setMoneyNM();
         poiskbazper(0, 0);
         potenshialBaz();
-        method = new PotentialsMethodForMin(rows, columns, money, masV, masU, xMN);
+        method = new PotentialsMethodMIN(rows, columns, money, masV, masU, xMN);
         while(method.potenshialNotBaz()){
             method.forWay();
             method.WayZamknut();
             method.begay();
             potenshialBaz();
         }
-    }
-    
-    public NorthwestCornerMIN(Integer row, Integer column, Integer balan1, Integer balan2, Integer[][] money){
-        this.money = money;
-        this.rows = row;
-        this.columns = column;
-        this.balan1 = balan1;
-        this.balan2 = balan2;
     }
 }

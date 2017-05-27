@@ -166,7 +166,7 @@ public class MinElement {
                 }
             }
         }
-        PotentialsMethodForMin method = new PotentialsMethodForMin(rows, columns, money, masV, masU, xMN);
+        PotentialsMethodMIN method = new PotentialsMethodMIN(rows, columns, money, masV, masU, xMN);
         potenshialBaz();
         while(method.potenshialNotBaz()){
             method.forWay();

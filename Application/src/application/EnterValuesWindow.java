@@ -1,5 +1,6 @@
 package application;
 
+import java.util.Objects;
 import javax.swing.table.DefaultTableModel;
 
 public class EnterValuesWindow extends javax.swing.JFrame {
@@ -259,7 +260,7 @@ public class EnterValuesWindow extends javax.swing.JFrame {
         for(int i = 0; i < column; i++){
             balan2 += masSpros[i];
         }
-        if(balan1 == balan2){
+        if(Objects.equals(balan1, balan2)){
             conditionSelection();
         }
         else{
@@ -272,12 +273,19 @@ public class EnterValuesWindow extends javax.swing.JFrame {
             if(jComboBox2.getSelectedItem() == jComboBox2.getItemAt(0)){
                 NCMin();
             }
+            else if(jComboBox2.getSelectedItem() == jComboBox2.getItemAt(1)){
+                NCMax();
+            }
             new Solution(row, column, balan1, balan2, money, masPredloj, masSpros, xMN, Z).setTitle("Метод Северо-Западного угла");
-            //else 
         }
         if(jComboBox1.getSelectedItem() == jComboBox1.getItemAt(1)){
-            //SolutionFogel.setTitle("Метод аппроксимации Фогеля угла");
-            //FogelMin();
+            if(jComboBox2.getSelectedItem() == jComboBox2.getItemAt(0)){
+                FogelMin();
+            }
+            else if(jComboBox2.getSelectedItem() == jComboBox2.getItemAt(1)){
+                FogelMax();
+            }
+            new Solution(row, column, balan1, balan2, m, masPredloj, masSpros, xMN, Z).setTitle("Метод Аппроксимации Фогеля");
         }
         if(jComboBox1.getSelectedItem() == jComboBox1.getItemAt(2)){
             if(jComboBox2.getSelectedItem() == jComboBox2.getItemAt(0)){
@@ -286,23 +294,39 @@ public class EnterValuesWindow extends javax.swing.JFrame {
             new Solution(row, column, balan1, balan2, m, masPredloj, masSpros, xMN, Z).setTitle("Метод Минимального элемента");
         }
         if(jComboBox1.getSelectedItem() == jComboBox1.getItemAt(3)){
-            MaxElement();
+            if(jComboBox2.getSelectedItem() == jComboBox2.getItemAt(1)){
+                MaxElement();
+            }
             new Solution(row, column, balan1, balan2, m, masPredloj, masSpros, xMN, Z).setTitle("Метод Максимального элемента");
         }
     }//GEN-LAST:event_jButton1MouseClicked
     
     void NCMin(){
-        nc = new NorthwestCornerMIN(row, column, balan1, balan2, money);
-        nc.cycle();
-        this.xMN = nc.getxMN();
-        this.Z = nc.getZ();
+        ncMin = new NorthwestCornerMIN(row, column, balan1, balan2, money);
+        ncMin.cycle();
+        this.xMN = ncMin.getxMN();
+        this.Z = ncMin.getZ();
+    }
+    
+    void NCMax(){
+        ncMax = new NorthwestCornerMAX(row, column, balan1, balan2, money);
+        ncMax.cycle();
+        this.xMN = ncMax.getxMN();
+        this.Z = ncMax.getZ();
     }
     
     void FogelMin(){
-        f = new Fogel(row, column, balan1, balan2, money, masPredloj, masSpros);
-        f.cycle();
-        this.xMN = f.getBasic();
-        this.Z = f.getZ();
+        fogelMin = new FogelMIN(row, column, balan1, balan2, money);
+        fogelMin.cycle();
+        this.xMN = fogelMin.getM();
+        this.Z = fogelMin.getZ();
+    }
+    
+    void FogelMax(){
+        fogelMax = new FogelMAX(row, column, balan1, balan2, money);
+        fogelMax.cycle();
+        this.xMN = fogelMax.getM();
+        this.Z = fogelMax.getZ();
     }
     
     void MinElement(){
@@ -347,8 +371,10 @@ public class EnterValuesWindow extends javax.swing.JFrame {
     Integer[][] money;
     Integer[][] xMN;
     Integer[][] m;
-    NorthwestCornerMIN nc;
-    Fogel f;
+    NorthwestCornerMIN ncMin;
+    NorthwestCornerMAX ncMax;
+    FogelMIN fogelMin;
+    FogelMAX fogelMax;
     MinElement minElement;
     MaxElement maxElement;
 }

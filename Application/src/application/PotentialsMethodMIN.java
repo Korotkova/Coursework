@@ -1,6 +1,6 @@
 package application;
 
-public class PotentialsMethodForMin{
+public class PotentialsMethodMIN{
     
     Integer rows;//предложение -i-строки
     Integer columns;//спрос - j - столбцы
@@ -13,12 +13,12 @@ public class PotentialsMethodForMin{
     int kJ = 0;//столбец вводимой переменной в базис
     int vonI = 0;//строка выводимой переменной из базиса
     int vonJ = 0;//столбец выводимой переменной из базиса
-    int[][] pyti;//для замкнутого цикла
+    Integer[][] pyti;//для замкнутого цикла
     String pytuperem;
     String children;//для запоминания ячеек
     int kolTochek = 0;
     
-    public PotentialsMethodForMin(Integer row, Integer column, Integer[][] money, Integer[] masPredloj, Integer[] masSpros, Integer[][] xmn) {
+    public PotentialsMethodMIN(Integer row, Integer column, Integer[][] money, Integer[] masPredloj, Integer[] masSpros, Integer[][] xmn) {
         this.rows = row;
         this.columns = column;
         this.xMN = xmn;
@@ -138,19 +138,6 @@ public class PotentialsMethodForMin{
        cleanTable();
         while (!proverkaround()) {
             cleanTable();
-        }
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                if(pyti[i][j] == 99999){
-                    System.out.print("*" + "\t");}
-                else{
-                    if(pyti[i][j] == 8888888){
-                        System.out.print("0" + "\t");
-                    }
-                    else System.out.print(pyti[i][j] + "\t");
-                    }
-            }
-            System.out.println();
         }
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
